@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EVG Jura — 21-23 août 2026</title>
+<style>
+  :root{
+    --bg:#EDF0EA; --surface:#FBFCF9; --surface-2:#F2F5EE; --raise:#FFFFFF;
+    --ink:#16241E; --ink-soft:#48574F; --ink-faint:#7C8A81;
+    --line:#D6DCD0; --line-soft:#E4E9DE;
+    --accent:#0C6E6A; --accent-2:#1E88A8; --accent-ink:#FFFFFF;
+    --ochre:#C56A1A;
+    --good:#2E7D51; --good-bg:#DCEEE1;
+    --warn:#9A6B08; --warn-bg:#F6ECC9;
+    --bad:#A93B2E; --bad-bg:#F3DAD5;
+    --shadow:0 1px 2px rgba(20,40,30,.06),0 8px 24px rgba(20,40,30,.06);
+    --font-sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --font-mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#0E1512; --surface:#151F1A; --surface-2:#1A2822; --raise:#1E2C25;
+      --ink:#E9EEE8; --ink-soft:#A6B4AB; --ink-faint:#788479;
+      --line:#26332C; --line-soft:#202B25;
+      --accent:#33B7AE; --accent-2:#54B4D0; --accent-ink:#052220;
+      --ochre:#E08A3E;
+      --good:#54BB80; --good-bg:#16281E;
+      --warn:#D9B84C; --warn-bg:#2B2410;
+      --bad:#E0685A; --bad-bg:#2E1714;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="light"]{
+    --bg:#EDF0EA; --surface:#FBFCF9; --surface-2:#F2F5EE; --raise:#FFFFFF;
+    --ink:#16241E; --ink-soft:#48574F; --ink-faint:#7C8A81;
+    --line:#D6DCD0; --line-soft:#E4E9DE;
+    --accent:#0C6E6A; --accent-2:#1E88A8; --accent-ink:#FFFFFF; --ochre:#C56A1A;
+    --good:#2E7D51; --good-bg:#DCEEE1; --warn:#9A6B08; --warn-bg:#F6ECC9;
+    --bad:#A93B2E; --bad-bg:#F3DAD5; --shadow:0 1px 2px rgba(20,40,30,.06),0 8px 24px rgba(20,40,30,.06);
+  }
+  :root[data-theme="dark"]{
+    --bg:#0E1512; --surface:#151F1A; --surface-2:#1A2822; --raise:#1E2C25;
+    --ink:#E9EEE8; --ink-soft:#A6B4AB; --ink-faint:#788479;
+    --line:#26332C; --line-soft:#202B25;
+    --accent:#33B7AE; --accent-2:#54B4D0; --accent-ink:#052220; --ochre:#E08A3E;
+    --good:#54BB80; --good-bg:#16281E; --warn:#D9B84C; --warn-bg:#2B2410;
+    --bad:#E0685A; --bad-bg:#2E1714; --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:var(--font-sans);line-height:1.6;
+    font-size:16px;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:960px;margin:0 auto;padding:0 20px}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+
+  .eyebrow{
+    font-family:var(--font-mono);font-size:12px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--ink-faint);margin:0 0 10px;
+  }
+  h1,h2,h3{text-wrap:balance;line-height:1.12;margin:0}
+  h2{font-size:clamp(22px,3.4vw,30px);letter-spacing:-.02em;font-weight:800}
+  h3{font-size:18px;letter-spacing:-.01em;font-weight:700}
+  p{margin:0 0 14px;max-width:68ch}
+
+  /* header */
+  header.top{
+    position:relative;overflow:hidden;
+    background:
+      radial-gradient(120% 140% at 88% -10%,color-mix(in srgb,var(--accent) 22%,transparent),transparent 55%),
+      linear-gradient(180deg,var(--surface),var(--bg));
+    border-bottom:1px solid var(--line);
+  }
+  .top-inner{padding:54px 0 40px}
+  .kicker{
+    display:inline-flex;gap:10px;align-items:center;font-family:var(--font-mono);
+    font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);
+    margin:0 0 18px;font-weight:600;
+  }
+  .kicker .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+  h1{font-size:clamp(32px,6.4vw,58px);font-weight:850;letter-spacing:-.03em;line-height:1.02;margin:0 0 16px}
+  h1 .river{color:var(--accent)}
+  .lede{font-size:clamp(16px,2vw,19px);color:var(--ink-soft);max-width:62ch;margin:0}
+
+  .theme-btn{
+    position:absolute;top:18px;right:18px;z-index:5;
+    font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    background:var(--surface);color:var(--ink-soft);border:1px solid var(--line);
+    padding:7px 12px;border-radius:999px;cursor:pointer;
+  }
+  .theme-btn:hover{color:var(--ink);border-color:var(--accent)}
+
+  /* deadline banner */
+  .banner{
+    display:flex;gap:14px;align-items:flex-start;
+    background:var(--warn-bg);border:1px solid color-mix(in srgb,var(--warn) 40%,transparent);
+    border-radius:12px;padding:14px 16px;margin:26px 0 0;
+  }
+  .banner .tag{
+    font-family:var(--font-mono);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--warn);white-space:nowrap;padding-top:2px;
+  }
+  .banner p{margin:0;font-size:14.5px;color:var(--ink)}
+  .banner strong{color:var(--ink)}
+
+  section{padding:46px 0;border-bottom:1px solid var(--line-soft)}
+  section:last-of-type{border-bottom:0}
+  .sec-head{margin-bottom:26px}
+
+  /* status pills */
+  .decisions{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:6px}
+  .card{
+    background:var(--surface);border:1px solid var(--line);border-radius:14px;
+    padding:18px;box-shadow:var(--shadow);
+  }
+  .card .lbl{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 8px}
+  .card .val{font-size:16px;font-weight:700;margin:0 0 4px;letter-spacing:-.01em}
+  .card .sub{font-size:13.5px;color:var(--ink-soft);margin:0}
+  .pill{display:inline-block;font-family:var(--font-mono);font-size:11px;font-weight:700;letter-spacing:.04em;
+    padding:3px 9px;border-radius:999px;text-transform:uppercase}
+  .pill.go{background:var(--good-bg);color:var(--good)}
+  .pill.todo{background:var(--warn-bg);color:var(--warn)}
+  .pill.no{background:var(--bad-bg);color:var(--bad)}
+
+  /* geo pivot */
+  .pivot{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:stretch;margin-top:8px}
+  .geo{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow)}
+  .geo h3{margin-bottom:8px}
+  .geo .meta{font-family:var(--font-mono);font-size:12px;color:var(--ink-faint);letter-spacing:.03em}
+  .geo ul{margin:12px 0 0;padding-left:18px;font-size:14px;color:var(--ink-soft)}
+  .geo li{margin:4px 0}
+  .geo.bad{border-color:color-mix(in srgb,var(--bad) 40%,var(--line))}
+  .geo.good{border-color:color-mix(in srgb,var(--accent) 45%,var(--line))}
+  .arrow{display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);color:var(--accent);font-size:26px;font-weight:700}
+  .geo-badge{font-family:var(--font-mono);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:999px;display:inline-block;margin-bottom:10px}
+  .geo.bad .geo-badge{background:var(--bad-bg);color:var(--bad)}
+  .geo.good .geo-badge{background:var(--good-bg);color:var(--good)}
+
+  /* generic grid of cards */
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px}
+  .lodging .card .val{font-size:17px}
+  .tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+  .mini{font-family:var(--font-mono);font-size:11px;letter-spacing:.03em;color:var(--ink-soft);
+    background:var(--surface-2);border:1px solid var(--line);padding:3px 8px;border-radius:6px}
+
+  /* table */
+  .table-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);background:var(--surface)}
+  table{border-collapse:collapse;width:100%;min-width:720px;font-size:14px}
+  thead th{
+    text-align:left;font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--ink-faint);font-weight:600;padding:14px 14px;border-bottom:1px solid var(--line);
+    background:var(--surface-2);position:sticky;top:0;
+  }
+  tbody td{padding:13px 14px;border-bottom:1px solid var(--line-soft);vertical-align:top}
+  tbody tr:last-child td{border-bottom:0}
+  tbody tr.dropped{opacity:.62}
+  .act-name{font-weight:700;letter-spacing:-.01em}
+  .act-sub{font-size:12.5px;color:var(--ink-faint);margin-top:2px}
+  td.num{font-family:var(--font-mono);font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--ink-soft)}
+  .chip{display:inline-block;font-family:var(--font-mono);font-size:11px;font-weight:700;letter-spacing:.03em;padding:2px 8px;border-radius:6px;white-space:nowrap}
+  .chip.g{background:var(--good-bg);color:var(--good)}
+  .chip.w{background:var(--warn-bg);color:var(--warn)}
+  .chip.b{background:var(--bad-bg);color:var(--bad)}
+  .chip.n{background:var(--surface-2);color:var(--ink-soft);border:1px solid var(--line)}
+
+  /* planning */
+  .days{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .day{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--shadow)}
+  .day > h3{background:var(--surface-2);padding:13px 16px;border-bottom:1px solid var(--line);font-family:var(--font-mono);font-size:13px;letter-spacing:.06em;text-transform:uppercase}
+  .slot{padding:12px 16px;border-bottom:1px solid var(--line-soft)}
+  .slot:last-child{border-bottom:0}
+  .slot .when{font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:0 0 4px}
+  .slot .what{font-size:14px;margin:0;color:var(--ink)}
+  .slot .note{font-size:12.5px;color:var(--ink-faint);margin:3px 0 0}
+
+  /* steps */
+  ol.steps{list-style:none;counter-reset:s;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+  ol.steps li{counter-increment:s;position:relative;padding:16px 16px 16px 58px;background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow)}
+  ol.steps li::before{content:counter(s,decimal-leading-zero);position:absolute;left:16px;top:15px;font-family:var(--font-mono);font-size:13px;font-weight:700;color:var(--accent-ink);background:var(--accent);width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center}
+  ol.steps b{display:block;margin-bottom:3px;letter-spacing:-.01em}
+  ol.steps span{font-size:13.5px;color:var(--ink-soft)}
+
+  .callout{background:var(--surface-2);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:10px;padding:14px 16px;font-size:14px;color:var(--ink-soft);margin-top:14px}
+  .callout b{color:var(--ink)}
+
+  footer{padding:34px 0 60px;color:var(--ink-faint);font-size:12.5px}
+  footer .eyebrow{margin-bottom:12px}
+  footer ul{margin:0;padding-left:18px;columns:2;column-gap:26px}
+  @media (max-width:560px){footer ul{columns:1}}
+  footer li{margin:3px 0;break-inside:avoid}
+
+  @media (max-width:720px){
+    .pivot{grid-template-columns:1fr}
+    .arrow{transform:rotate(90deg);padding:4px 0}
+    .days{grid-template-columns:1fr}
+  }
+  @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<button class="theme-btn" id="themeBtn" type="button" aria-label="Basculer le thème">◐ Thème</button>
+
+<header class="top">
+  <div class="wrap top-inner">
+    <p class="kicker"><span class="dot"></span> EVG · Massif du Jura · 21–23 août 2026</p>
+    <h1>Un week-end sportif qui tient debout, <span class="river">côté eau vive</span>.</h1>
+    <p class="lede">8 gars, un canyon fiable en plein mois d'août, un gîte avec piscine et un plan qui ne passe plus la moitié de la journée sur la route. Voici la reco et ce qu'il reste à réserver.</p>
+
+    <div class="banner" role="note">
+      <span class="tag">⏳ Deadline</span>
+      <p><strong>Airbnb Marchaux annulable gratuitement jusqu'au 22 juillet.</strong> C'est la fenêtre pour basculer le logement vers le Jura sans rien perdre. Tout le reste du plan en dépend.</p>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- DÉCISIONS -->
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">01 — Décisions clés</p>
+      <h2>Ce qui est tranché</h2>
+    </div>
+    <div class="decisions">
+      <div class="card">
+        <p class="lbl">Logement</p>
+        <p class="val">Jura central — hub Champagnole</p>
+        <p class="sub"><span class="pill todo">À réserver</span> puis annuler Marchaux avant le 22/07.</p>
+      </div>
+      <div class="card">
+        <p class="lbl">Canyon cible</p>
+        <p class="val">Malvaux (Foncine-le-Bas)</p>
+        <p class="sub"><span class="pill go">Retenu</span> ludique, sauts optionnels, garde l'eau en août.</p>
+      </div>
+      <div class="card">
+        <p class="lbl">Canyon écarté</p>
+        <p class="val">Langouette</p>
+        <p class="sub"><span class="pill no">Non</span> rappels obligatoires + vertige rédhibitoire (dit par l'orga).</p>
+      </div>
+      <div class="card">
+        <p class="lbl">Règle du samedi</p>
+        <p class="val">1 activité eau + 1 activité sèche</p>
+        <p class="sub"><span class="pill go">Adopté</span> ne plus empiler deux activités eau le même jour.</p>
+      </div>
+      <div class="card">
+        <p class="lbl">Plan B eau</p>
+        <p class="val">Décidé à J-7</p>
+        <p class="sub"><span class="pill todo">Prêt</span> bascule vers activité sèche sans résa si niveau bas.</p>
+      </div>
+      <div class="card">
+        <p class="lbl">Transfert train</p>
+        <p class="val">Corentin récupéré sur la route</p>
+        <p class="sub"><span class="pill todo">À caler</span> Dole/Mouchard plutôt que détour Besançon.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PIVOT GÉO -->
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">02 — Le pivot géographique</p>
+      <h2>Pourquoi on descend le logement</h2>
+    </div>
+    <p>L'eau fiable en été est dans le <strong>Jura sud</strong> (canyons alimentés en altitude par la Saine). Marchaux était au <strong>nord</strong> de Besançon — donc gare et gîte au nord, sport au sud, et Besançon traversé à chaque sortie. En posant le camp à <strong>Champagnole</strong>, tout le week-end se joue dans un rayon de 30 minutes.</p>
+    <div class="pivot">
+      <div class="geo bad">
+        <span class="geo-badge">✕ Avant — Marchaux</span>
+        <h3>Nord-est de Besançon</h3>
+        <p class="meta">Gîte + gare au nord · sport au sud</p>
+        <ul>
+          <li>Canyons Doubs à sec en août</li>
+          <li>1h+ pour chaque activité</li>
+          <li>Besançon traversé en boucle</li>
+        </ul>
+      </div>
+      <div class="arrow" aria-hidden="true">→</div>
+      <div class="geo good">
+        <span class="geo-badge">✓ Après — Champagnole</span>
+        <h3>Cœur du Jura des lacs</h3>
+        <p class="meta">Tout à ≤ 30 min</p>
+        <ul>
+          <li>Canyon Malvaux ~25 min</li>
+          <li>Cascades du Hérisson / lac de Chalain ~30 min</li>
+          <li>Baignade &amp; paddle sur place</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout"><b>Contrepartie :</b> la gare Besançon-Franche-Comté TGV passe à ~1h. On l'évite en récupérant Corentin en train à <b>Dole</b> (sur la route des voitures rémoises) ou à <b>Mouchard</b> (~35 min du hub). Voir la section Transport.</div>
+  </section>
+
+  <!-- LOGEMENT -->
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">03 — Logement</p>
+      <h2>Gîte 8 personnes, piscine ou jacuzzi</h2>
+    </div>
+    <p>Objectif : 8+ couchages, piscine ou spa, nuits du 21 et 22 août, secteur Champagnole. Le coin est fourni — dispo à confirmer en direct. Fourchette observée ~150–320 €/nuit, soit un budget total dans l'ordre des 1259 € actuels, voire moins.</p>
+    <div class="grid lodging">
+      <div class="card">
+        <p class="lbl">Hub prioritaire</p>
+        <p class="val">Champagnole &amp; alentours</p>
+        <p class="sub">Le plus central pour Malvaux / Langouette / Hérisson.</p>
+      </div>
+      <div class="card">
+        <p class="lbl">Alternative lacs</p>
+        <p class="val">Clairvaux-les-Lacs / Doucier</p>
+        <p class="sub">Plus de gîtes piscine + baignade ; ~40 min des canyons.</p>
+      </div>
+      <div class="card">
+        <p class="lbl">Où chercher</p>
+        <p class="val">Plateformes filtrées</p>
+        <div class="tagrow">
+          <a class="mini" href="https://www.gites-de-france-jura.com/location-de-vacances/gites-de-grande-capacite.html" target="_blank" rel="noopener">Gîtes de France Jura</a>
+          <a class="mini" href="https://www.gites.fr/piscine_jura_d39.html" target="_blank" rel="noopener">gites.fr · piscine</a>
+          <a class="mini" href="https://www.gitedegroupe.fr/gites-groupe-jura.html" target="_blank" rel="noopener">gitedegroupe.fr</a>
+          <a class="mini" href="https://www.holidu.fr/f/gites-jura-france" target="_blank" rel="noopener">Holidu</a>
+        </div>
+      </div>
+    </div>
+    <div class="callout"><b>À faire :</b> verrouiller un gîte Champagnole avant le 22/07, <b>puis</b> annuler Marchaux — dans cet ordre, jamais l'inverse.</div>
+  </section>
+
+  <!-- ACTIVITÉS -->
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">04 — Activités</p>
+      <h2>Le menu depuis le hub</h2>
+    </div>
+    <p>Prix indicatifs par personne, temps de route depuis Champagnole. La colonne <em>vertige</em> est un repère à valider soi-même (photos + appel orga), sauf mention « écarté » quand l'organisateur l'indique rédhibitoire.</p>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Activité</th><th>Route</th><th>€/pers</th><th>Eau août</th><th>Vertige / expo</th><th>Résa</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="act-name">Canyon de Malvaux</div><div class="act-sub">Foncine-le-Bas · ludique</div></td>
+            <td class="num">~25 min</td><td class="num">45–55</td>
+            <td><span class="chip g">Fiable</span></td>
+            <td><span class="chip g">Faible</span><div class="act-sub">sauts optionnels</div></td>
+            <td><span class="chip w">Oui</span></td>
+          </tr>
+          <tr class="dropped">
+            <td><div class="act-name">Canyon de la Langouette</div><div class="act-sub">Les Planches-en-Montagne</div></td>
+            <td class="num">~15 min</td><td class="num">~50</td>
+            <td><span class="chip g">Fiable</span></td>
+            <td><span class="chip b">Écarté</span><div class="act-sub">rappels obligatoires + vertige</div></td>
+            <td><span class="chip n">—</span></td>
+          </tr>
+          <tr>
+            <td><div class="act-name">Canyon du Grosdar</div><div class="act-sub">Saint-Claude · plan B débutant</div></td>
+            <td class="num">~1h</td><td class="num">~50</td>
+            <td><span class="chip g">Fiable</span></td>
+            <td><span class="chip w">Faible–moyen</span></td>
+            <td><span class="chip w">Oui</span></td>
+          </tr>
+          <tr>
+            <td><div class="act-name">Accrobranche de Doucier</div><div class="act-sub">près lac de Chalain · 10 parcours</div></td>
+            <td class="num">~30 min</td><td class="num">~22</td>
+            <td><span class="chip n">Sec</span></td>
+            <td><span class="chip w">Selon parcours</span><div class="act-sub">ligne de vie continue</div></td>
+            <td><span class="chip n">Conseillé</span></td>
+          </tr>
+          <tr>
+            <td><div class="act-name">Via ferrata Jura</div><div class="act-sub">Morez / lac de Vouglans</div></td>
+            <td class="num">~40 min</td><td class="num">40–50</td>
+            <td><span class="chip n">Sec</span></td>
+            <td><span class="chip w">Selon parcours</span></td>
+            <td><span class="chip w">Oui</span></td>
+          </tr>
+          <tr>
+            <td><div class="act-name">Cascades du Hérisson</div><div class="act-sub">rando · plan B sans résa</div></td>
+            <td class="num">~30 min</td><td class="num">gratuit</td>
+            <td><span class="chip w">Variable</span></td>
+            <td><span class="chip g">Faible</span></td>
+            <td><span class="chip g">Non</span></td>
+          </tr>
+          <tr>
+            <td><div class="act-name">Lac de Chalain / Clairvaux</div><div class="act-sub">baignade &amp; paddle</div></td>
+            <td class="num">~30 min</td><td class="num">~15/h</td>
+            <td><span class="chip n">N/A</span></td>
+            <td><span class="chip g">Faible</span></td>
+            <td><span class="chip g">Non</span></td>
+          </tr>
+          <tr>
+            <td><div class="act-name">Spéléo découverte</div><div class="act-sub">grotte · horizontal</div></td>
+            <td class="num">~45 min</td><td class="num">~45</td>
+            <td><span class="chip n">Sec</span></td>
+            <td><span class="chip g">Faible</span></td>
+            <td><span class="chip w">Oui</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout"><b>Contact Malvaux :</b> Canyoning-Jura / OutdoorActivities — <b>+33 6 89 68 14 96</b> · aussi Sports Nature Évasion, Le Sens de l'Eau. Demander : dispo 22–23 août, tarif groupe 8, présence de rappels obligatoires (vertige).</div>
+  </section>
+
+  <!-- EAU -->
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">05 — Le niveau d'eau en août</p>
+      <h2>Pourquoi le Jura et pas le Doubs</h2>
+    </div>
+    <p>Le Doubs et la Loue coulent sur un karst fissuré : pertes souterraines + étiage estival = lits souvent à sec en été (sécheresses documentées). Les canyons du Doubs de la première liste (Amondans, Rochanon) n'auront pas le niveau en août.</p>
+    <p>Les canyons du Jura sud (Malvaux, Langouette) sont alimentés par la <strong>Saine</strong>, plus en altitude, et restent praticables — Malvaux étant même <strong>recommandé en été</strong> pour son caractère aquatique. Le niveau réel se confirme ~<strong>1 semaine avant</strong> ; d'où le plan B sec déjà prêt.</p>
+  </section>
+
+  <!-- TRANSPORT -->
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">06 — Transport</p>
+      <h2>Qui arrive comment</h2>
+    </div>
+    <div class="grid">
+      <div class="card"><p class="lbl">Reims</p><p class="val">2 voitures</p><p class="sub">Olivier (ven ~10h) &amp; Nicolas (ven aprem) au volant ; LT, Alexis L., Ernest passagers.</p></div>
+      <div class="card"><p class="lbl">Arlon (BE)</p><p class="val">Pierre — voiture solo</p><p class="sub">Départ vendredi ~16h.</p></div>
+      <div class="card"><p class="lbl">Vichy</p><p class="val">Guillaume — moto</p><p class="sub">Départ vendredi matin.</p></div>
+      <div class="card"><p class="lbl">Strasbourg</p><p class="val">Corentin — train</p><p class="sub">Dispo dès jeudi ; à récupérer en route.</p></div>
+    </div>
+    <div class="callout" style="margin-top:18px">
+      <b>Optimisation train Corentin.</b> La route Reims → Champagnole passe par <b>Dole</b> (A39). Le faire arriver en train à <b>Dole</b> = une voiture rémoise le récupère au passage, <b>zéro détour Besançon</b>. Sinon <b>Mouchard</b> (~35 min du hub) ou, en secours, le TGV Besançon-Franche-Comté d'origine (~1h). <b>Retour dimanche :</b> gîte libéré le matin → passage possible par Besançon (resto + dépose gare) ou Dole/Mouchard. Horaires SNCF à figer :
+      <a href="https://www.sncf-connect.com/train/horaires/strasbourg/dole" target="_blank" rel="noopener">Strasbourg→Dole</a>.
+    </div>
+  </section>
+
+  <!-- PLANNING -->
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">07 — Planning recomposé</p>
+      <h2>Le week-end, heure par heure</h2>
+    </div>
+    <div class="days">
+      <div class="day">
+        <h3>Vendredi 21</h3>
+        <div class="slot"><p class="when">Matin</p><p class="what">Départs : Olivier (Reims), Guillaume (moto Vichy)</p></div>
+        <div class="slot"><p class="when">Après-midi</p><p class="what">2ᵉ voiture Reims + Pierre (Arlon). Corentin récupéré à Dole/Mouchard sur la route.</p></div>
+        <div class="slot"><p class="when">Fin de journée</p><p class="what">Installation gîte, piscine / lac, courses BBQ</p></div>
+        <div class="slot"><p class="when">Soir</p><p class="what">Soirée + barbecue</p></div>
+      </div>
+      <div class="day">
+        <h3>Samedi 22</h3>
+        <div class="slot"><p class="when">Matin</p><p class="what">Canyon de Malvaux</p><p class="note">si niveau OK (connu à J-7) — sinon bascule plan B sec</p></div>
+        <div class="slot"><p class="when">Midi</p><p class="what">Pique-nique / snack sur place</p></div>
+        <div class="slot"><p class="when">Après-midi</p><p class="what">Activité sèche : accrobranche Doucier, via ferrata ou baignade + paddle lac de Chalain</p></div>
+        <div class="slot"><p class="when">Soir</p><p class="what">Soirée + barbecue</p></div>
+      </div>
+      <div class="day">
+        <h3>Dimanche 23</h3>
+        <div class="slot"><p class="when">Matin</p><p class="what">Grasse mat' + piscine, ménage &amp; check-out gîte</p></div>
+        <div class="slot"><p class="when">Midi</p><p class="what">Route retour ; option resto à Besançon</p></div>
+        <div class="slot"><p class="when">Après-midi</p><p class="what">Dépose Corentin (train) ; karting possible en chemin</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- À FAIRE -->
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">08 — Prochaines étapes</p>
+      <h2>À boucler cette semaine</h2>
+    </div>
+    <ol class="steps">
+      <li><b>Réserver le gîte Champagnole (8 pers + piscine)</b><span>Puis annuler Marchaux avant le 22 juillet. Ordre non négociable.</span></li>
+      <li><b>Appeler l'orga Malvaux</b><span>+33 6 89 68 14 96 — dispo 22–23 août, tarif groupe 8, question rappels/vertige.</span></li>
+      <li><b>Figer le train de Corentin</b><span>Vérifier Strasbourg → Dole (ou Mouchard) vendredi + retour dimanche.</span></li>
+      <li><b>Choisir le plan B sec</b><span>Accrobranche Doucier ou via ferrata — pré-réserver si nécessaire.</span></li>
+      <li><b>Confirmer l'activité dimanche</b><span>Karting près de Besançon/Lons, ou resto + baignade selon horaire train retour.</span></li>
+    </ol>
+  </section>
+
+  <footer>
+    <p class="eyebrow">Sources</p>
+    <ul>
+      <li><a href="https://canyoning-jura.com/fr/blog/canyoning-jura-guide-complet" target="_blank" rel="noopener">Guide canyoning Jura</a></li>
+      <li><a href="https://www.sportsnatureevasion.com/activites/canyoning-jura-gorges-de-malvaux-foncine-le-bas-initiation/" target="_blank" rel="noopener">Malvaux — Sports Nature Évasion</a></li>
+      <li><a href="https://canyoning-jura.com/canyoning/canyon-langouette-canyoning-jura" target="_blank" rel="noopener">Langouette (vertige/rappels)</a></li>
+      <li><a href="https://www.jura-accro-loisirs.fr/" target="_blank" rel="noopener">Accrobranche Doucier</a></li>
+      <li><a href="https://www.jura-tourism.com/vivre-le-jura/pratiquer/activites-nautiques-baignade/canyoning/" target="_blank" rel="noopener">Jura Tourisme — canyoning</a></li>
+      <li><a href="https://passionjura.fr/evjf-evg-jura/" target="_blank" rel="noopener">Activités EVG Jura</a></li>
+      <li><a href="https://www.gites-de-france-jura.com/location-de-vacances/gites-de-grande-capacite.html" target="_blank" rel="noopener">Gîtes de France Jura — grande capacité</a></li>
+      <li><a href="https://france3-regions.franceinfo.fr/bourgogne-franche-comte/doubs/pontarlier/des-canyons-a-sec-une-cascade-emblematique-qui-ne-murmure-plus-en-images-les-paysages-du-doubs-devastes-par-la-secheresse-d-une-precocite-inedite-3382324.html" target="_blank" rel="noopener">Sécheresse canyons Doubs (France 3)</a></li>
+    </ul>
+    <p style="margin-top:20px">Document de travail — prix &amp; distances indicatifs, dispos à confirmer en direct. Dernière révision avant réservation.</p>
+  </footer>
+
+</main>
+
+<script>
+  (function(){
+    var btn=document.getElementById('themeBtn');
+    var root=document.documentElement;
+    btn.addEventListener('click',function(){
+      var cur=root.getAttribute('data-theme');
+      if(!cur){cur=window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';}
+      root.setAttribute('data-theme', cur==='dark'?'light':'dark');
+    });
+  })();
+</script>
+</body>
+</html>
