@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>EVG Jura — 21-23 août 2026</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
 <style>
   :root{
     --bg:#F3F1EC; --surface:#FCFBF8; --surface-2:#F4F2ED; --raise:#FFFFFF;
@@ -48,13 +49,14 @@
     --bad:#E0685A; --bad-bg:#2E1714; --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.4);
   }
   *{box-sizing:border-box}
-  html{-webkit-text-size-adjust:100%}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
   body{
     margin:0;background:var(--bg);color:var(--ink);
     font-family:var(--font-sans);line-height:1.6;
     font-size:16px;-webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
   }
-  .wrap{max-width:960px;margin:0 auto;padding:0 20px}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 20px}
   a{color:var(--accent);text-decoration:none}
   a:hover{text-decoration:underline}
   a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
@@ -114,7 +116,13 @@
   .banner p{margin:0;font-size:14.5px;color:var(--ink)}
   .banner strong{color:var(--ink)}
 
-  section{padding:46px 0;border-bottom:1px solid var(--line-soft)}
+  /* nav */
+  .nav{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .nav-inner{display:flex;gap:4px;overflow-x:auto;padding:9px 20px;-webkit-overflow-scrolling:touch}
+  .nav a{font-family:var(--font-mono);font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft);padding:6px 11px;border-radius:8px;white-space:nowrap}
+  .nav a:hover{color:var(--ink);background:var(--surface-2);text-decoration:none}
+
+  section{padding:46px 0;border-bottom:1px solid var(--line-soft);scroll-margin-top:60px}
   section:last-of-type{border-bottom:0}
   .sec-head{margin-bottom:26px}
 
@@ -155,8 +163,16 @@
     background:var(--surface-2);border:1px solid var(--line);padding:3px 8px;border-radius:6px}
 
   /* table */
-  .table-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);background:var(--surface)}
-  table{border-collapse:collapse;width:100%;min-width:720px;font-size:14px}
+  /* wide tables break out of the text column and center on the viewport */
+  .table-scroll{
+    overflow-x:auto;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);background:var(--surface);
+    width:min(1280px,100vw - 40px);margin-left:50%;transform:translateX(-50%);
+    -webkit-overflow-scrolling:touch;
+  }
+  table{border-collapse:collapse;width:100%;min-width:760px;font-size:14px}
+  .lodging-tbl{table-layout:fixed;min-width:900px}
+  .lodging-tbl .chip{white-space:normal}
+  .lodging-tbl .act-sub{white-space:normal}
   thead th{
     text-align:left;font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;
     color:var(--ink-faint);font-weight:600;padding:14px 14px;border-bottom:1px solid var(--line);
@@ -194,6 +210,25 @@
   .callout{background:var(--surface-2);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:10px;padding:14px 16px;font-size:14px;color:var(--ink-soft);margin-top:14px}
   .callout b{color:var(--ink)}
 
+  /* carte */
+  .map{height:480px;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden;z-index:0}
+  .map-legend{display:flex;flex-wrap:wrap;gap:18px;margin-bottom:12px;font-size:14px;color:var(--ink)}
+  .map-legend span{display:inline-flex;align-items:center;gap:8px}
+  .map-legend .dot{width:16px;height:16px;border-radius:50%;box-shadow:0 0 0 1px rgba(0,0,0,.2)}
+  .map-legend .lg-star{font-size:19px;line-height:1;color:var(--ink)}
+  .dot.sport,.pin.sport{background:#E23744}
+  .dot.gastro,.pin.gastro{background:#F2B01E}
+  .dot.gite,.pin.gite{background:#2E7DF6}
+  .pin{width:22px;height:22px;border-radius:50%;border:2.5px solid #fff;box-shadow:0 0 0 1.5px rgba(0,0,0,.6),0 1px 5px rgba(0,0,0,.5)}
+  .pinstar{font-size:26px;line-height:1;text-align:center;text-shadow:0 0 2px #fff,0 0 4px #fff,0 1px 2px rgba(0,0,0,.75)}
+  .pinstar.sport{color:#E23744}
+  .pinstar.gastro{color:#F2B01E}
+  .pinstar.gite{color:#2E7DF6}
+  @media (prefers-color-scheme:dark){.leaflet-tile{filter:invert(1) hue-rotate(180deg) brightness(.95) contrast(.9)}}
+  :root[data-theme="dark"] .leaflet-tile{filter:invert(1) hue-rotate(180deg) brightness(.95) contrast(.9)}
+  :root[data-theme="light"] .leaflet-tile{filter:none}
+  .leaflet-popup-content{font-family:var(--font-sans)}
+
   footer{padding:34px 0 60px;color:var(--ink-faint);font-size:12.5px}
   footer .eyebrow{margin-bottom:12px}
   footer ul{margin:0;padding-left:18px;columns:2;column-gap:26px}
@@ -205,6 +240,15 @@
     .arrow{transform:rotate(90deg);padding:4px 0}
     .days{grid-template-columns:1fr}
   }
+  @media (max-width:600px){
+    .wrap{padding:0 14px}
+    section{padding:34px 0}
+    .top-inner{padding:38px 0 28px}
+    thead th,tbody td{padding:11px 11px}
+    .card{padding:16px}
+    ol.steps li{padding:14px 14px 14px 52px}
+    .theme-btn{top:12px;right:12px}
+  }
   @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 </style>
 </head>
@@ -215,7 +259,7 @@
   <div class="wrap top-inner">
     <p class="kicker"><span class="dot"></span> EVG · Massif du Jura · 21–23 août 2026</p>
     <h1>Un week-end sportif qui tient debout, <span class="river">côté eau vive</span>.</h1>
-    <p class="lede">8 gars, un canyon fiable en plein mois d'août, un gîte avec piscine et un plan qui ne passe plus la moitié de la journée sur la route. Voici la reco et ce qu'il reste à réserver.</p>
+    <p class="lede">8 gars, un canyon fiable en plein mois d'août, un gîte avec piscine ou jacuzzi et un plan qui ne passe plus la moitié de la journée sur la route. Voici la reco et ce qu'il reste à réserver.</p>
 
     <div class="banner" role="note">
       <span class="tag">⏳ Deadline</span>
@@ -224,55 +268,27 @@
   </div>
 </header>
 
+<nav class="nav">
+  <div class="wrap nav-inner">
+    <a href="#choix">Le choix</a>
+    <a href="#carte">Carte</a>
+    <a href="#logement">Logement</a>
+    <a href="#activites">Activités</a>
+    <a href="#transport">Transport</a>
+    <a href="#planning">Planning</a>
+  </div>
+</nav>
+
 <main class="wrap">
 
-  <!-- DÉCISIONS -->
-  <section>
+  <!-- CHOIX (géo + eau) -->
+  <section id="choix">
     <div class="sec-head">
-      <p class="eyebrow">01 — Décisions clés</p>
-      <h2>Ce qui est tranché</h2>
+      <p class="eyebrow">01 — Le choix de base</p>
+      <h2>Pourquoi on descend dans le Jura</h2>
     </div>
-    <div class="decisions">
-      <div class="card">
-        <p class="lbl">Logement</p>
-        <p class="val">Jura central — hub Champagnole</p>
-        <p class="sub"><span class="pill todo">À réserver</span> puis annuler Marchaux avant le 22/07.</p>
-      </div>
-      <div class="card">
-        <p class="lbl">Canyon cible</p>
-        <p class="val">Malvaux (Foncine-le-Bas)</p>
-        <p class="sub"><span class="pill go">Retenu</span> ludique, sauts optionnels, garde l'eau en août.</p>
-      </div>
-      <div class="card">
-        <p class="lbl">Canyon écarté</p>
-        <p class="val">Langouette</p>
-        <p class="sub"><span class="pill no">Non</span> rappels obligatoires + vertige rédhibitoire (dit par l'orga).</p>
-      </div>
-      <div class="card">
-        <p class="lbl">Règle du samedi</p>
-        <p class="val">1 activité eau + 1 activité sèche</p>
-        <p class="sub"><span class="pill go">Adopté</span> ne plus empiler deux activités eau le même jour.</p>
-      </div>
-      <div class="card">
-        <p class="lbl">Plan B eau</p>
-        <p class="val">Décidé à J-7</p>
-        <p class="sub"><span class="pill todo">Prêt</span> bascule vers activité sèche sans résa si niveau bas.</p>
-      </div>
-      <div class="card">
-        <p class="lbl">Transfert train</p>
-        <p class="val">Corentin récupéré à Dijon</p>
-        <p class="sub"><span class="pill go">Calé</span> TGV direct, sur la route des voitures rémoises.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- PIVOT GÉO -->
-  <section>
-    <div class="sec-head">
-      <p class="eyebrow">02 — Le pivot géographique</p>
-      <h2>Pourquoi on descend le logement</h2>
-    </div>
-    <p>L'eau fiable en été est dans le <strong>Jura sud</strong> (canyons alimentés en altitude par la Saine). Marchaux était au <strong>nord</strong> de Besançon — donc gare et gîte au nord, sport au sud, et Besançon traversé à chaque sortie. En posant le camp à <strong>Champagnole</strong>, tout le week-end se joue dans un rayon de 30 minutes.</p>
+    <p>Marchaux était au <strong>nord</strong> de Besançon — gare et gîte au nord, mais les activités toutes au <strong>sud</strong> : Besançon traversé à chaque sortie, 1h+ par trajet. En posant le camp dans le <strong>Jura central (secteur Champagnole–Métabief)</strong>, tout le week-end tient dans un rayon de ~30-40 min.</p>
+    <p>Et pourquoi le sud ? Une question d'eau : le Doubs et la Loue coulent sur un karst fissuré → souvent à sec en été (les canyons Amondans / Rochanon de la 1ʳᵉ liste n'auront pas le niveau). Les canyons du Jura sud comme <strong>Malvaux</strong>, alimentés en altitude par la <strong>Saine</strong>, gardent l'eau — Malvaux est même <strong>recommandé en été</strong>. Le niveau réel se confirme ~<strong>1 semaine avant</strong> ; si besoin, on remplace l'activité eau par une autre.</p>
     <div class="pivot">
       <div class="geo bad">
         <span class="geo-badge">✕ Avant — Marchaux</span>
@@ -286,58 +302,148 @@
       </div>
       <div class="arrow" aria-hidden="true">→</div>
       <div class="geo good">
-        <span class="geo-badge">✓ Après — Champagnole</span>
-        <h3>Cœur du Jura des lacs</h3>
-        <p class="meta">Tout à ≤ 30 min</p>
+        <span class="geo-badge">✓ Après — dans le Jura</span>
+        <h3>Tout au même endroit</h3>
+        <p class="meta">Activités à 15 min – 1h · plus de traversée de Besançon</p>
         <ul>
-          <li>Canyon Malvaux ~25 min</li>
-          <li>Cascades du Hérisson / lac de Chalain ~30 min</li>
-          <li>Baignade &amp; paddle sur place</li>
+          <li>Luge / comté / absinthe ~15 min</li>
+          <li>Canyon Malvaux ~35 min</li>
+          <li>Lacs &amp; cascades ~50 min</li>
         </ul>
       </div>
     </div>
     <div class="callout"><b>Contrepartie :</b> la gare Besançon-Franche-Comté TGV passe à ~1h. On l'évite en récupérant Corentin à <b>Dijon</b> (TGV direct depuis Strasbourg, sur l'axe A31 des voitures rémoises). Voir la section Transport.</div>
   </section>
 
+  <!-- CARTE -->
+  <section id="carte">
+    <div class="sec-head">
+      <p class="eyebrow">02 — Carte</p>
+      <h2>Tout le week-end sur une carte</h2>
+    </div>
+    <div class="map-legend">
+      <span><i class="dot sport"></i> Activité sport</span>
+      <span><i class="dot gastro"></i> Détente / gastro</span>
+      <span><i class="dot gite"></i> Gîte (piste)</span>
+      <span><b class="lg-star">★</b> Notre reco</span>
+    </div>
+    <div id="map" class="map"></div>
+    <p style="font-size:13px;color:var(--ink-faint);margin-top:10px">Positions approximatives — cliquer un pin pour le nom + le lien. Fond de carte © OpenStreetMap.</p>
+  </section>
+
   <!-- LOGEMENT -->
-  <section>
+  <section id="logement">
     <div class="sec-head">
       <p class="eyebrow">03 — Logement</p>
       <h2>Gîte 8 personnes, piscine ou jacuzzi</h2>
     </div>
-    <p>Objectif : 8+ couchages, piscine ou spa, nuits du 21 et 22 août, secteur Champagnole. Le coin est fourni — dispo à confirmer en direct. Fourchette observée ~150–320 €/nuit, soit un budget total dans l'ordre des 1259 € actuels, voire moins.</p>
-    <div class="grid lodging">
-      <div class="card">
-        <p class="lbl">Hub prioritaire</p>
-        <p class="val">Champagnole &amp; alentours</p>
-        <p class="sub">Le plus central pour Malvaux / Langouette / Hérisson.</p>
-      </div>
-      <div class="card">
-        <p class="lbl">Alternative lacs</p>
-        <p class="val">Clairvaux-les-Lacs / Doucier</p>
-        <p class="sub">Plus de gîtes piscine + baignade ; ~40 min des canyons.</p>
-      </div>
-      <div class="card">
-        <p class="lbl">Où chercher</p>
-        <p class="val">Plateformes filtrées</p>
-        <div class="tagrow">
-          <a class="mini" href="https://www.gites-de-france-jura.com/location-de-vacances/gites-de-grande-capacite.html" target="_blank" rel="noopener">Gîtes de France Jura</a>
-          <a class="mini" href="https://www.gites.fr/piscine_jura_d39.html" target="_blank" rel="noopener">gites.fr · piscine</a>
-          <a class="mini" href="https://www.gitedegroupe.fr/gites-groupe-jura.html" target="_blank" rel="noopener">gitedegroupe.fr</a>
-          <a class="mini" href="https://www.holidu.fr/f/gites-jura-france" target="_blank" rel="noopener">Holidu</a>
-        </div>
-      </div>
+    <p>Critères : 8+ couchages (idéal un lit chacun), piscine ou jacuzzi, <strong>logement privatisé</strong>, dispo les nuits du 21 et 22 août, et <strong>proximité des activités</strong> — le canyon <em>Malvaux</em> (Foncine, plateau SE) ou son alternative <em>Grosdar</em> (Saint-Claude, SW) selon l'emplacement du gîte, plus les lacs. Budget repère ~630 €/nuit. Beaucoup d'options sont déjà complètes en août : le tableau ne garde que du dispo ou quasi.</p>
+    <div class="callout"><b>En attente — capacité 8 ou 9 ?</b> Tout est calculé pour <b>8</b>. À confirmer : <b>Alexis Leclercq</b> (Paris) est-il certain de ne pas venir ? S'il vient, il faut <b>9 couchages</b> → écarter alors les gîtes à 8 pile.</div>
+    <div class="callout" style="border-left-color:var(--ochre)"><b>Le piège des lits :</b> un gîte « 8 pers / 4 chambres » = presque toujours <b>4 lits doubles</b> → 4 gars partagent. Pour <b>un lit chacun</b>, deux voies : viser un gîte <b>12-15 pers</b> (plus de couchages) ou un gîte qui annonce explicitement des <b>lits simples</b>. La colonne <em>Lits</em> ci-dessous le signale — à reconfirmer sur la fiche avant de réserver.</div>
+    <div class="table-scroll">
+      <table class="lodging-tbl">
+        <colgroup><col style="width:29%"><col style="width:11%"><col style="width:8%"><col style="width:15%"><col style="width:12%"><col style="width:10%"><col style="width:7%"><col style="width:8%"></colgroup>
+        <thead>
+          <tr><th>Gîte &amp; points forts</th><th>Commune</th><th>Cap.</th><th>Lits</th><th>Eau</th><th>Prix</th><th>Dispo</th><th>Canyon</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="act-name"><span class="chip g">Reco</span> <a href="https://www.airbnb.fr/rooms/1421686491425072049?adults=8&amp;check_in=2026-08-21&amp;check_out=2026-08-23" target="_blank" rel="noopener">Maison 8 couchages avec SPA</a></div><div class="act-sub">Airbnb · logement entier · <b>jacuzzi privatif</b> · secteur Métabief / Malbuisson (lac St-Point, Mont d'Or) · 4,66★ · pas cher.</div></td>
+            <td>Touillon-et-Loutelet</td><td class="num">8</td>
+            <td><span class="chip w">3 ch. / 5 lits · 1 SdB</span></td>
+            <td><span class="chip g">Jacuzzi privatif</span></td>
+            <td class="num">665 €<div class="act-sub">/ 2 nuits</div></td>
+            <td><span class="chip g">✓ dispo</span></td>
+            <td class="num">~35 min</td>
+          </tr>
+          <tr>
+            <td><div class="act-name"><a href="https://www.lesgitesdumoulindelucrece.fr/" target="_blank" rel="noopener">Moulin de Lucrèce — Chant'Sonnette</a></div><div class="act-sub">Grand gîte <b>4★ de 260 m²</b> avec <b>piscine</b> · cadre vignoble &amp; lacs · week-end Ven 17h → Dim 10h.</div></td>
+            <td>Beaufort-Orbagna</td><td class="num">12</td>
+            <td><span class="chip w">5 ch. / 3 SdB — à confirmer</span></td>
+            <td><span class="chip g">Piscine</span></td>
+            <td class="num">sur devis<div class="act-sub">07 69 95 26 92</div></td>
+            <td><span class="chip w">À confirmer</span></td>
+            <td class="num">Grosdar ~40<div class="act-sub">Malvaux ~1h</div></td>
+          </tr>
+          <tr>
+            <td><div class="act-name"><a href="https://www.booking.com/hotel/fr/la-champagnolaise.fr.html" target="_blank" rel="noopener">La Champagnolaise</a></div><div class="act-sub">En ville, <b>ultra central</b> · jacuzzi + terrasse vue montagne, BBQ · seule dispo déjà confirmée.</div></td>
+            <td>Champagnole</td><td class="num">8</td>
+            <td><span class="chip b">4 ch. doubles (partage) · 1 SdB</span></td>
+            <td><span class="chip w">Jacuzzi</span></td>
+            <td class="num">968 €<div class="act-sub">/ 2 nuits</div></td>
+            <td><span class="chip g">✓ dispo</span></td>
+            <td class="num">~25 min</td>
+          </tr>
+          <tr>
+            <td><div class="act-name"><a href="https://www.airbnb.fr/rooms/1338350047888896995?adults=8&amp;check_in=2026-08-21&amp;check_out=2026-08-23" target="_blank" rel="noopener">Maison de la forêt</a></div><div class="act-sub">Airbnb · logement entier · 5,0★ coup de cœur · piscine privée 6×4, grand jardin · <b>proche gare Dijon</b> (récup Corentin). Loin des canyons.</div></td>
+            <td>Auxonne</td><td class="num">10</td>
+            <td><span class="chip w">4 ch. / 6 lits · 2 SdB (doubles + 1 simple)</span></td>
+            <td><span class="chip g">Piscine privée</span></td>
+            <td class="num">816 €<div class="act-sub">/ 2 nuits</div></td>
+            <td><span class="chip g">✓ dispo</span></td>
+            <td class="num">~1h15</td>
+          </tr>
+          <tr>
+            <td><div class="act-name"><a href="https://www.airbnb.fr/rooms/21891428?adults=8&amp;check_in=2026-08-21&amp;check_out=2026-08-23" target="_blank" rel="noopener">La ferme du Noyer</a></div><div class="act-sub">Airbnb · logement entier · 4,68★ · piscine + babyfoot, 160 m² · pas cher. Loin des canyons.</div></td>
+            <td>Serley</td><td class="num">9</td>
+            <td><span class="chip b">3 ch. / 4 lits · 1,5 SdB (2 doubles + superposé) → partage</span></td>
+            <td><span class="chip g">Piscine</span></td>
+            <td class="num">672 €<div class="act-sub">/ 2 nuits</div></td>
+            <td><span class="chip g">✓ dispo</span></td>
+            <td class="num">~1h30</td>
+          </tr>
+          <tr>
+            <td colspan="8" style="background:var(--surface-2);font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);padding:9px 14px">Sans piscine/jacuzzi mais dispo &amp; privatisé — repli si on lâche le critère eau</td>
+          </tr>
+          <tr>
+            <td><div class="act-name"><a href="https://www.airbnb.fr/rooms/623811669412934852?adults=8&amp;check_in=2026-08-21&amp;check_out=2026-08-23" target="_blank" rel="noopener">Gîte de charme centre-ville</a></div><div class="act-sub">Airbnb · logement entier · <b>centre-ville de Poligny</b> (commerces &amp; resto à pied) · 4,91★ · le moins cher.</div></td>
+            <td>Poligny</td><td class="num">8</td>
+            <td><span class="chip w">3 ch. / 5 lits · 1 SdB</span></td>
+            <td><span class="chip n">Ni piscine ni jacuzzi</span></td>
+            <td class="num">565 €<div class="act-sub">/ 2 nuits</div></td>
+            <td><span class="chip g">✓ dispo</span></td>
+            <td class="num">~50 min</td>
+          </tr>
+          <tr>
+            <td><div class="act-name"><a href="https://www.gites-de-france-jura.com/location-vacances-Gite-a-Saint-lothain-G2731.html" target="_blank" rel="noopener">Le Chat Qui Louche</a></div><div class="act-sub">Ancienne ferme privatisée · <b>un lit chacun garanti</b> · sauna, cave de dégustation, babyfoot · près Château-Chalon.</div></td>
+            <td>Saint-Lothain</td><td class="num">13</td>
+            <td><span class="chip g">3 simples + doubles/superposés</span></td>
+            <td><span class="chip n">Sauna seul</span></td>
+            <td class="num">1250 €<div class="act-sub">/ 2 nuits</div></td>
+            <td><span class="chip g">✓ dispo</span></td>
+            <td class="num">~55 min</td>
+          </tr>
+          <tr>
+            <td><div class="act-name"><a href="https://www.gitesausoleil.fr/" target="_blank" rel="noopener">Gîtes au Soleil</a></div><div class="act-sub">Rénové 2025, privatisable · <b>chambre + SdB privée pour chacun</b> · billard, babyfoot, pétanque · Haut-Jura sud.</div></td>
+            <td>Mijoux (01)</td><td class="num">16–36</td>
+            <td><span class="chip g">Ch. 2-5p, SdB privée chacune</span></td>
+            <td><span class="chip n">Ni piscine ni jacuzzi</span></td>
+            <td class="num">sur devis<div class="act-sub">ANCV · 06 81 01 36 58</div></td>
+            <td><span class="chip w">✓ (min 2 nuits)</span></td>
+            <td class="num">~1h</td>
+          </tr>
+          <tr>
+            <td><div class="act-name"><a href="https://www.gites-de-france-jura.com/location-vacances-Gite-a-Bois-d-amont-G2071.html" target="_blank" rel="noopener">Les Guinches</a></div><div class="act-sub">Gîte en gestion libre 174 m² au village (boulangerie à côté) · 5 ch · Haut-Jura.</div></td>
+            <td>Bois-d'Amont</td><td class="num">12</td>
+            <td><span class="chip g">5 ch. / 2 SdB</span></td>
+            <td><span class="chip n">Ni piscine ni jacuzzi</span></td>
+            <td class="num">~1000 €<div class="act-sub">/ sem. (été)</div></td>
+            <td><span class="chip w">À vérifier</span></td>
+            <td class="num">~40 min</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <div class="callout"><b>À faire :</b> verrouiller un gîte Champagnole avant le 22/07, <b>puis</b> annuler Marchaux — dans cet ordre, jamais l'inverse.</div>
   </section>
 
   <!-- ACTIVITÉS -->
-  <section>
+  <section id="activites">
     <div class="sec-head">
       <p class="eyebrow">04 — Activités</p>
       <h2>Le menu depuis le hub</h2>
     </div>
-    <p>Prix indicatifs par personne, temps de route depuis Champagnole. La colonne <em>vertige</em> est un repère à valider soi-même (photos + appel orga), sauf mention « écarté » quand l'organisateur l'indique rédhibitoire.</p>
+    <p>Prix indicatifs par personne, temps de route <strong>depuis le gîte reco (Touillon-et-Loutelet)</strong>. La colonne <em>vertige</em> est un repère à valider soi-même (photos + appel orga), sauf mention « écarté » quand l'organisateur l'indique rédhibitoire.</p>
+    <div class="callout" style="border-left-color:var(--ochre)"><b>À noter :</b> Touillon est au <b>Haut-Doubs</b> → imbattable pour luge / comté / absinthe (~15 min) mais <b>35 min à 1h20</b> des activités des lacs (Chalain, Hérisson) et du sud-ouest (Grosdar, Moirans). Un gîte vers Champagnole rapprocherait ce cluster — arbitrage jacuzzi/dispo vs proximité.</div>
     <div class="table-scroll">
       <table>
         <thead>
@@ -347,57 +453,85 @@
         </thead>
         <tbody>
           <tr>
-            <td><div class="act-name">Canyon de Malvaux</div><div class="act-sub">Foncine-le-Bas · ludique</div></td>
-            <td class="num">~25 min</td><td class="num">45–55</td>
+            <td><div class="act-name"><a href="https://canyoning-jura.com/canyoning/canyon-malvaux-canyoning-jura" target="_blank" rel="noopener">Canyon de Malvaux</a></div><div class="act-sub">Foncine-le-Bas · ludique</div></td>
+            <td class="num">~35 min</td><td class="num">45–55</td>
             <td><span class="chip g">Fiable</span></td>
             <td><span class="chip g">Faible</span><div class="act-sub">sauts optionnels</div></td>
             <td><span class="chip w">Oui</span></td>
           </tr>
-          <tr class="dropped">
-            <td><div class="act-name">Canyon de la Langouette</div><div class="act-sub">Les Planches-en-Montagne</div></td>
-            <td class="num">~15 min</td><td class="num">~50</td>
-            <td><span class="chip g">Fiable</span></td>
-            <td><span class="chip b">Écarté</span><div class="act-sub">rappels obligatoires + vertige</div></td>
-            <td><span class="chip n">—</span></td>
-          </tr>
           <tr>
-            <td><div class="act-name">Canyon du Grosdar</div><div class="act-sub">Saint-Claude · plan B débutant</div></td>
-            <td class="num">~1h</td><td class="num">~50</td>
+            <td><div class="act-name"><a href="https://eskaleo.fr/canyoning-jura/canyoning-jura-saint-claude-grosdar/" target="_blank" rel="noopener">Canyon du Grosdar</a></div><div class="act-sub">Saint-Claude · plan B débutant</div></td>
+            <td class="num">~1h20</td><td class="num">~50</td>
             <td><span class="chip g">Fiable</span></td>
             <td><span class="chip w">Faible–moyen</span></td>
             <td><span class="chip w">Oui</span></td>
           </tr>
           <tr>
-            <td><div class="act-name">Accrobranche de Doucier</div><div class="act-sub">près lac de Chalain · 10 parcours</div></td>
-            <td class="num">~30 min</td><td class="num">~22</td>
+            <td><div class="act-name"><a href="https://www.manawa.com/fr-FR/activite/france/besancon/rafting/descente-en-kayak-gonflable-des-gorges-de-la-loue-a-ornans-pres-de-besancon/23475" target="_blank" rel="noopener">Packraft (kayak gonflable)</a></div><div class="act-sub">Gorges de la Loue, Ornans · <b>départ imposé 9h</b></div></td>
+            <td class="num">~50 min</td><td class="num">49</td>
+            <td><span class="chip w">À confirmer J-7</span></td>
+            <td><span class="chip g">Faible</span></td>
+            <td><span class="chip w">Oui</span></td>
+          </tr>
+          <tr>
+            <td><div class="act-name"><a href="https://www.jura-tourism.com/activite/canoe-kayak-pontois/" target="_blank" rel="noopener">Descente canoë / kayak — l'Ain</a></div><div class="act-sub">Canoë Kayak Pontois, Pont-de-Poitte · <b>horaires souples, eau régulée</b> (vs 9h imposé du packraft)</div></td>
+            <td class="num">~1h</td><td class="num">15–24</td>
+            <td><span class="chip g">Fiable (Ain régulé)</span></td>
+            <td><span class="chip g">Faible</span></td>
+            <td><span class="chip w">Conseillé</span></td>
+          </tr>
+          <tr>
+            <td><div class="act-name"><a href="https://www.jura-accro-loisirs.fr/" target="_blank" rel="noopener">Accrobranche de Doucier</a></div><div class="act-sub">près lac de Chalain · 10 parcours</div></td>
+            <td class="num">~50 min</td><td class="num">~22</td>
             <td><span class="chip n">Sec</span></td>
             <td><span class="chip w">Selon parcours</span><div class="act-sub">ligne de vie continue</div></td>
             <td><span class="chip n">Conseillé</span></td>
           </tr>
           <tr>
-            <td><div class="act-name">Via ferrata Jura</div><div class="act-sub">Morez / lac de Vouglans</div></td>
-            <td class="num">~40 min</td><td class="num">40–50</td>
+            <td><div class="act-name"><a href="https://www.jura-tourism.com/activite/via-ferrata-du-regardoir-lac-de-vouglans/" target="_blank" rel="noopener">Via ferrata Jura</a></div><div class="act-sub">Le Regardoir — lac de Vouglans (Moirans)</div></td>
+            <td class="num">~1h20</td><td class="num">40–50</td>
             <td><span class="chip n">Sec</span></td>
             <td><span class="chip w">Selon parcours</span></td>
             <td><span class="chip w">Oui</span></td>
           </tr>
           <tr>
-            <td><div class="act-name">Cascades du Hérisson</div><div class="act-sub">rando · plan B sans résa</div></td>
-            <td class="num">~30 min</td><td class="num">gratuit</td>
+            <td><div class="act-name"><a href="https://www.station-metabief.com/fr/luge-sur-rails-metabief" target="_blank" rel="noopener">Luge sur rail</a></div><div class="act-sub">Luge des Cimes, Métabief · 710 m, 40 km/h · courte → à coupler (Haut-Doubs, ~20 min) : comté Fort St-Antoine, lac St-Point, absinthe Pontarlier</div></td>
+            <td class="num">~10 min</td><td class="num">dès 5 €</td>
+            <td><span class="chip n">Sec</span></td>
+            <td><span class="chip g">Faible</span><div class="act-sub">vitesse contrôlable</div></td>
+            <td><span class="chip g">Non</span></td>
+          </tr>
+          <tr>
+            <td><div class="act-name"><a href="https://www.karting-besancon.com/" target="_blank" rel="noopener">Karting</a></div><div class="act-sub">CKB Besançon (outdoor 1200 m) ou Games Factory (indoor) · idéal dimanche au retour</div></td>
+            <td class="num">~1h<div class="act-sub">Besançon, sur la route</div></td><td class="num">17–18</td>
+            <td><span class="chip n">Sec</span></td>
+            <td><span class="chip g">Faible</span></td>
+            <td><span class="chip w">Conseillé</span></td>
+          </tr>
+          <tr>
+            <td><div class="act-name"><a href="https://www.cascades-du-herisson.fr/" target="_blank" rel="noopener">Cascades du Hérisson</a></div><div class="act-sub">rando · plan B sans résa</div></td>
+            <td class="num">~50 min</td><td class="num">gratuit</td>
             <td><span class="chip w">Variable</span></td>
             <td><span class="chip g">Faible</span></td>
             <td><span class="chip g">Non</span></td>
           </tr>
           <tr>
-            <td><div class="act-name">Lac de Chalain / Clairvaux</div><div class="act-sub">baignade &amp; paddle</div></td>
-            <td class="num">~30 min</td><td class="num">~15/h</td>
+            <td><div class="act-name"><a href="https://www.jura-tourism.com/vivre-le-jura/visiter/les-incontournables/lac-de-chalain/" target="_blank" rel="noopener">Lac de Chalain / Clairvaux</a></div><div class="act-sub">baignade &amp; paddle</div></td>
+            <td class="num">~50 min</td><td class="num">~15/h</td>
             <td><span class="chip n">N/A</span></td>
             <td><span class="chip g">Faible</span></td>
             <td><span class="chip g">Non</span></td>
           </tr>
           <tr>
-            <td><div class="act-name">Spéléo découverte</div><div class="act-sub">grotte · horizontal</div></td>
-            <td class="num">~45 min</td><td class="num">~45</td>
+            <td><div class="act-name"><a href="https://www.neuchatelville.ch/sortir-et-decouvrir/le-lac-de-neuchatel" target="_blank" rel="noopener">Lac de Neuchâtel</a> 🇨🇭</div><div class="act-sub">baignade, paddle, croisière · Suisse (carte d'identité)</div></td>
+            <td class="num">~45 min</td><td class="num">croisière ~25 CHF</td>
+            <td><span class="chip n">N/A</span></td>
+            <td><span class="chip g">Faible</span></td>
+            <td><span class="chip g">Non</span></td>
+          </tr>
+          <tr>
+            <td><div class="act-name"><a href="https://www.la-boite-a-montagne-jura.fr/activite-details/speleologie/speleologie-grotte-de-balerne/153" target="_blank" rel="noopener">Spéléo découverte</a></div><div class="act-sub">grotte de Balerne · horizontal</div></td>
+            <td class="num">~40 min</td><td class="num">~45</td>
             <td><span class="chip n">Sec</span></td>
             <td><span class="chip g">Faible</span></td>
             <td><span class="chip w">Oui</span></td>
@@ -406,79 +540,85 @@
       </table>
     </div>
     <div class="callout"><b>Contact Malvaux :</b> Canyoning-Jura / OutdoorActivities — <b>+33 6 89 68 14 96</b> · aussi Sports Nature Évasion, Le Sens de l'Eau. Demander : dispo 22–23 août, tarif groupe 8, présence de rappels obligatoires (vertige).</div>
-  </section>
 
-  <!-- EAU -->
-  <section>
-    <div class="sec-head">
-      <p class="eyebrow">05 — Le niveau d'eau en août</p>
-      <h2>Pourquoi le Jura et pas le Doubs</h2>
+    <h3 style="margin:38px 0 6px">Détente &amp; gastronomie (le soir / off)</h3>
+    <p style="font-size:14px">Ne bloquent pas une journée. Versions locales du Jura (les visites Besançon d'origine étaient trop loin). Distances depuis le gîte reco (Touillon-et-Loutelet).</p>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th>Activité</th><th>Lieu</th><th>Route</th><th>€/pers</th><th>Infos</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="act-name"><a href="https://www.comte.com/sur-les-routes-du-comte/fromagerie-du-mont-dor/" target="_blank" rel="noopener">Fromagerie du Mont d'Or (comté)</a></div><div class="act-sub">Métabief · <b>fromagerie (fabrication), pas une cave</b> · simple &amp; proche</div></td>
+            <td>Métabief</td><td class="num">~10 min</td><td class="num">gratuit</td>
+            <td>Visite libre tous les jours dès 9h · dégustation offerte<div class="act-sub">aussi Fruitière des Lacs (Labergement, 9h-10h30)</div></td>
+          </tr>
+          <tr>
+            <td><div class="act-name"><a href="https://www.fort-des-rousses.com/fr" target="_blank" rel="noopener">Cave d'affinage Comté</a></div><div class="act-sub">Fort des Rousses (Juraflore) · <b>vraie cave d'affinage</b>, 190 000 meules, spectaculaire</div></td>
+            <td>Les Rousses</td><td class="num">~40 min</td><td class="num">11,80</td>
+            <td>Visite 1h30 + dégustation · créneaux <b>ven. dès 15h30 / dim.</b> · <span class="chip w">résa</span></td>
+          </tr>
+          <tr>
+            <td><div class="act-name"><a href="https://www.fruitiere-vinicole-arbois.fr/" target="_blank" rel="noopener">Dégustation vin jaune</a></div><div class="act-sub">Fruitière Vinicole d'Arbois (coopérative 1906)</div></td>
+            <td>Arbois</td><td class="num">~1h</td><td class="num">0–15</td>
+            <td>Sans RDV · caveau <span class="chip g">libre</span><div class="act-sub">alt. Château-Chalon / Caveau des Jacobins (Poligny)</div></td>
+          </tr>
+          <tr>
+            <td><div class="act-name"><a href="https://pontarlier-anis.com/" target="_blank" rel="noopener">Distillerie d'absinthe</a></div><div class="act-sub">« Fée verte » · Distillerie Guy / Émile Pernot</div></td>
+            <td>Pontarlier</td><td class="num">~15 min</td><td class="num">gratuit</td>
+            <td>Visite + dégustation offerte · <span class="chip g">sans RDV (Guy)</span></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <p>Le Doubs et la Loue coulent sur un karst fissuré : pertes souterraines + étiage estival = lits souvent à sec en été (sécheresses documentées). Les canyons du Doubs de la première liste (Amondans, Rochanon) n'auront pas le niveau en août.</p>
-    <p>Les canyons du Jura sud (Malvaux, Langouette) sont alimentés par la <strong>Saine</strong>, plus en altitude, et restent praticables — Malvaux étant même <strong>recommandé en été</strong> pour son caractère aquatique. Le niveau réel se confirme ~<strong>1 semaine avant</strong> ; d'où le plan B sec déjà prêt.</p>
   </section>
 
   <!-- TRANSPORT -->
-  <section>
+  <section id="transport">
     <div class="sec-head">
-      <p class="eyebrow">06 — Transport</p>
+      <p class="eyebrow">05 — Transport</p>
       <h2>Qui arrive comment</h2>
     </div>
     <div class="grid">
       <div class="card"><p class="lbl">Reims</p><p class="val">2 voitures</p><p class="sub">Olivier (ven ~10h) &amp; Nicolas (ven aprem) au volant ; LT, Alexis L., Ernest passagers.</p></div>
       <div class="card"><p class="lbl">Arlon (BE)</p><p class="val">Pierre — voiture solo</p><p class="sub">Départ vendredi ~16h.</p></div>
       <div class="card"><p class="lbl">Vichy</p><p class="val">Guillaume — moto</p><p class="sub">Départ vendredi matin.</p></div>
-      <div class="card"><p class="lbl">Strasbourg</p><p class="val">Corentin — TGV direct</p><p class="sub">Aller ven. 13h05 → Dijon 15h11 ; retour dim. 17h50 → 20h13.</p></div>
+      <div class="card"><p class="lbl">Strasbourg</p><p class="val">Corentin — TGV direct</p><p class="sub">Récup à Besançon (son train d'origine) ou Dijon — les deux sur la route de Touillon.</p></div>
     </div>
     <div class="callout" style="margin-top:18px">
-      <b>Corentin par Dijon.</b> TGV <b>direct sans correspondance</b> : aller vendredi <b>13h05 → Dijon 15h11</b>, retour dimanche <b>Dijon 17h50 → Strasbourg 20h13</b>. Dijon est sur l'axe A31 des voitures rémoises → une voiture le récupère au passage, <b>zéro détour Besançon</b>. Dijon → hub Champagnole ~1h.
-      <a href="https://www.sncf-connect.com/train/horaires/strasbourg/dijon" target="_blank" rel="noopener">Horaires Strasbourg↔Dijon</a>.
+      <b>Corentin — Besançon ou Dijon.</b> Pour le gîte reco (Touillon, SE), la route des voitures rémoises passe par <b>Dijon puis Besançon</b> (A31 → A36 → N57). Corentin peut donc garder son <b>TGV direct Strasbourg → Besançon</b> (Besançon ~1h du gîte, le plus proche) ou descendre à <b>Dijon</b> — dans les deux cas une voiture le récupère au passage. Bonus : Besançon étant sur le trajet, on peut y <b>passer le dimanche</b> (karting + resto) avant de déposer Corentin à la gare.
+      <a href="https://www.sncf-connect.com/train/horaires/strasbourg/besancon" target="_blank" rel="noopener">Horaires Strasbourg↔Besançon</a>.
     </div>
   </section>
 
   <!-- PLANNING -->
-  <section>
+  <section id="planning">
     <div class="sec-head">
-      <p class="eyebrow">07 — Planning recomposé</p>
+      <p class="eyebrow">06 — Planning recomposé</p>
       <h2>Le week-end, heure par heure</h2>
     </div>
     <div class="days">
       <div class="day">
         <h3>Vendredi 21</h3>
-        <div class="slot"><p class="when">Matin</p><p class="what">Départs : Olivier (Reims), Guillaume (moto Vichy)</p></div>
-        <div class="slot"><p class="when">Après-midi</p><p class="what">2ᵉ voiture Reims + Pierre (Arlon). Corentin récupéré à Dijon (TGV 15h11) sur la route.</p></div>
-        <div class="slot"><p class="when">Fin de journée</p><p class="what">Installation gîte, piscine / lac, courses BBQ</p></div>
+        <div class="slot"><p class="when">Matin</p><p class="what">Départ voiture 1 (Reims) · Guillaume (moto, Vichy)</p></div>
+        <div class="slot"><p class="when">Après-midi</p><p class="what">Récupérer Corentin à Dijon (train 15h11) · départ voiture 2 · piscine</p></div>
         <div class="slot"><p class="when">Soir</p><p class="what">Soirée + barbecue</p></div>
       </div>
       <div class="day">
         <h3>Samedi 22</h3>
-        <div class="slot"><p class="when">Matin</p><p class="what">Canyon de Malvaux</p><p class="note">si niveau OK (connu à J-7) — sinon bascule plan B sec</p></div>
-        <div class="slot"><p class="when">Midi</p><p class="what">Pique-nique / snack sur place</p></div>
-        <div class="slot"><p class="when">Après-midi</p><p class="what">Activité sèche : accrobranche Doucier, via ferrata ou baignade + paddle lac de Chalain</p></div>
-        <div class="slot"><p class="when">Soir</p><p class="what">Soirée + barbecue</p></div>
+        <div class="slot"><p class="when">Matin</p><p class="what">Canyon (Malvaux)</p><p class="note">niveau vérifié ~1 sem. avant — remplacé par une autre activité si bas</p></div>
+        <div class="slot"><p class="when">Midi</p><p class="what">Sandwich / snack</p></div>
+        <div class="slot"><p class="when">Après-midi</p><p class="what">Packraft (Ornans)</p><p class="note">ou 2ᵉ activité — arbitré à J-7 selon l'eau</p></div>
+        <div class="slot"><p class="when">Soir</p><p class="what">Soirée sans alcool + BBQ végé</p></div>
       </div>
       <div class="day">
         <h3>Dimanche 23</h3>
-        <div class="slot"><p class="when">Matin</p><p class="what">Grasse mat' + piscine, ménage &amp; check-out gîte</p></div>
-        <div class="slot"><p class="when">Midi</p><p class="what">Route retour ; option resto à Besançon</p></div>
-        <div class="slot"><p class="when">Après-midi</p><p class="what">Dépose Corentin à Dijon (TGV 17h50) sur la route du retour ; karting possible avant</p></div>
+        <div class="slot"><p class="when">Matin</p><p class="what">Ronfler + piscine · check-out</p></div>
+        <div class="slot"><p class="when">Midi</p><p class="what">Cap Besançon (sur la route du retour) · resto en ville</p></div>
+        <div class="slot"><p class="when">Après-midi</p><p class="what">Karting (CKB / Games Factory) · dépose Corentin à la gare de Besançon</p></div>
       </div>
     </div>
-  </section>
-
-  <!-- À FAIRE -->
-  <section>
-    <div class="sec-head">
-      <p class="eyebrow">08 — Prochaines étapes</p>
-      <h2>À boucler cette semaine</h2>
-    </div>
-    <ol class="steps">
-      <li><b>Réserver le gîte Champagnole (8 pers + piscine)</b><span>Puis annuler Marchaux avant le 22 juillet. Ordre non négociable.</span></li>
-      <li><b>Appeler l'orga Malvaux</b><span>+33 6 89 68 14 96 — dispo 22–23 août, tarif groupe 8, question rappels/vertige.</span></li>
-      <li><b>Réserver le TGV de Corentin</b><span>Strasbourg↔Dijon direct : aller ven. 13h05→15h11, retour dim. 17h50→20h13. Caler le passage voiture à Dijon.</span></li>
-      <li><b>Choisir le plan B sec</b><span>Accrobranche Doucier ou via ferrata — pré-réserver si nécessaire.</span></li>
-      <li><b>Confirmer l'activité dimanche</b><span>Karting près de Besançon/Lons, ou resto + baignade selon horaire train retour.</span></li>
-    </ol>
   </section>
 
   <footer>
@@ -486,7 +626,6 @@
     <ul>
       <li><a href="https://canyoning-jura.com/fr/blog/canyoning-jura-guide-complet" target="_blank" rel="noopener">Guide canyoning Jura</a></li>
       <li><a href="https://www.sportsnatureevasion.com/activites/canyoning-jura-gorges-de-malvaux-foncine-le-bas-initiation/" target="_blank" rel="noopener">Malvaux — Sports Nature Évasion</a></li>
-      <li><a href="https://canyoning-jura.com/canyoning/canyon-langouette-canyoning-jura" target="_blank" rel="noopener">Langouette (vertige/rappels)</a></li>
       <li><a href="https://www.jura-accro-loisirs.fr/" target="_blank" rel="noopener">Accrobranche Doucier</a></li>
       <li><a href="https://www.jura-tourism.com/vivre-le-jura/pratiquer/activites-nautiques-baignade/canyoning/" target="_blank" rel="noopener">Jura Tourisme — canyoning</a></li>
       <li><a href="https://passionjura.fr/evjf-evg-jura/" target="_blank" rel="noopener">Activités EVG Jura</a></li>
@@ -508,6 +647,59 @@
       root.setAttribute('data-theme', cur==='dark'?'light':'dark');
     });
   })();
+</script>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+(function(){
+  if(!window.L||!document.getElementById('map')) return;
+  var P=[
+    // Gîtes
+    ['gite',"Maison 8 couchages SPA — Touillon-et-Loutelet",46.7869,6.3517,"https://www.airbnb.fr/rooms/1421686491425072049",1],
+    ['gite',"Moulin de Lucrèce — Beaufort-Orbagna",46.6047,5.4783,"https://www.lesgitesdumoulindelucrece.fr/"],
+    ['gite',"La Champagnolaise — Champagnole",46.7470,5.9132,"https://www.booking.com/hotel/fr/la-champagnolaise.fr.html"],
+    ['gite',"Maison de la forêt — Auxonne",47.1935,5.3872,"https://www.airbnb.fr/rooms/1338350047888896995"],
+    ['gite',"La ferme du Noyer — Serley",46.8330,5.2760,"https://www.airbnb.fr/rooms/21891428"],
+    ['gite',"Gîte centre-ville — Poligny",46.8372,5.7060,"https://www.airbnb.fr/rooms/623811669412934852"],
+    ['gite',"Le Chat Qui Louche — Saint-Lothain",46.8020,5.6640,"https://www.gites-de-france-jura.com/location-vacances-Gite-a-Saint-lothain-G2731.html"],
+    ['gite',"Gîtes au Soleil — Mijoux",46.3720,6.0200,"https://www.gitesausoleil.fr/"],
+    ['gite',"Les Guinches — Bois-d'Amont",46.5330,6.1420,"https://www.gites-de-france-jura.com/location-vacances-Gite-a-Bois-d-amont-G2071.html"],
+    // Sport
+    ['sport',"Canyon de Malvaux — Foncine-le-Bas",46.6600,6.0600,"https://canyoning-jura.com/canyoning/canyon-malvaux-canyoning-jura",1],
+    ['sport',"Canyon du Grosdar — Saint-Claude",46.3870,5.8650,"https://eskaleo.fr/canyoning-jura/canyoning-jura-saint-claude-grosdar/"],
+    ['sport',"Packraft — Gorges de la Loue, Ornans",47.1050,6.1500,"https://www.manawa.com/fr-FR/activite/france/besancon/rafting/descente-en-kayak-gonflable-des-gorges-de-la-loue-a-ornans-pres-de-besancon/23475"],
+    ['sport',"Descente canoë/kayak — l'Ain, Pont-de-Poitte",46.6280,5.7080,"https://www.jura-tourism.com/activite/canoe-kayak-pontois/"],
+    ['sport',"Accrobranche — Doucier",46.6600,5.7830,"https://www.jura-accro-loisirs.fr/"],
+    ['sport',"Via ferrata du Regardoir — lac de Vouglans",46.4350,5.7250,"https://www.jura-tourism.com/activite/via-ferrata-du-regardoir-lac-de-vouglans/"],
+    ['sport',"Luge sur rail — Métabief",46.7700,6.3550,"https://www.station-metabief.com/fr/luge-sur-rails-metabief"],
+    ['sport',"Karting — Besançon (CKB / Games Factory)",47.2400,6.0200,"https://www.karting-besancon.com/"],
+    ['sport',"Lac de Neuchâtel (baignade, paddle, croisière) 🇨🇭",46.9900,6.9300,"https://www.neuchatelville.ch/sortir-et-decouvrir/le-lac-de-neuchatel"],
+    ['sport',"Cascades du Hérisson — Ménétrux-en-Joux",46.6350,5.8720,"https://www.cascades-du-herisson.fr/"],
+    ['sport',"Lac de Chalain — baignade & paddle",46.6650,5.7900,"https://www.jura-tourism.com/vivre-le-jura/visiter/les-incontournables/lac-de-chalain/"],
+    ['sport',"Spéléo — grotte de Balerne",46.7050,5.8600,"https://www.la-boite-a-montagne-jura.fr/activite-details/speleologie/speleologie-grotte-de-balerne/153"],
+    // Gastro
+    ['gastro',"Comté — Fort des Rousses (Juraflore)",46.4840,6.0640,"https://www.fort-des-rousses.com/fr"],
+    ['gastro',"Comté — Fromagerie du Mont d'Or (Métabief)",46.7810,6.3560,"https://www.comte.com/sur-les-routes-du-comte/fromagerie-du-mont-dor/"],
+    ['gastro',"Vin jaune — Fruitière Vinicole d'Arbois",46.9040,5.7750,"https://www.fruitiere-vinicole-arbois.fr/"],
+    ['gastro',"Absinthe — Pontarlier (Distillerie Guy)",46.9080,6.3560,"https://pontarlier-anis.com/"]
+  ];
+  var map=L.map('map',{scrollWheelZoom:false}).setView([46.68,5.98],9);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'&copy; OpenStreetMap'}).addTo(map);
+  function icon(c,reco){
+    if(reco) return L.divIcon({className:'',html:'<div class="pinstar '+c+'">★</div>',iconSize:[30,30],iconAnchor:[15,15]});
+    return L.divIcon({className:'',html:'<div class="pin '+c+'"></div>',iconSize:[22,22],iconAnchor:[11,11]});
+  }
+  var lab={sport:'Activité sport',gastro:'Détente / gastro',gite:'Gîte (piste)'};
+  var group=[];
+  P.forEach(function(p){
+    var m=L.marker([p[2],p[3]],{icon:icon(p[0],p[5])}).addTo(map);
+    var h='<b>'+p[1]+'</b><br><span style="font-size:11px;letter-spacing:.04em;color:#8a8c82">'+lab[p[0]]+'</span>';
+    if(p[4]) h+='<br><a href="'+p[4]+'" target="_blank" rel="noopener">Ouvrir le lien</a>';
+    m.bindPopup(h);
+    group.push(m);
+  });
+  map.fitBounds(L.featureGroup(group).getBounds().pad(0.12));
+})();
 </script>
 </body>
 </html>
