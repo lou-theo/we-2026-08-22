@@ -6,46 +6,46 @@
 <title>EVG Jura — 21-23 août 2026</title>
 <style>
   :root{
-    --bg:#EDF0EA; --surface:#FBFCF9; --surface-2:#F2F5EE; --raise:#FFFFFF;
-    --ink:#16241E; --ink-soft:#48574F; --ink-faint:#7C8A81;
-    --line:#D6DCD0; --line-soft:#E4E9DE;
-    --accent:#0C6E6A; --accent-2:#1E88A8; --accent-ink:#FFFFFF;
-    --ochre:#C56A1A;
-    --good:#2E7D51; --good-bg:#DCEEE1;
-    --warn:#9A6B08; --warn-bg:#F6ECC9;
-    --bad:#A93B2E; --bad-bg:#F3DAD5;
-    --shadow:0 1px 2px rgba(20,40,30,.06),0 8px 24px rgba(20,40,30,.06);
+    --bg:#F3F1EC; --surface:#FCFBF8; --surface-2:#F4F2ED; --raise:#FFFFFF;
+    --ink:#1F2420; --ink-soft:#54584F; --ink-faint:#8A8C82;
+    --line:#E3DFD6; --line-soft:#ECE9E1;
+    --accent:#0E7C78; --accent-2:#1E7FA0; --accent-ink:#FFFFFF;
+    --ochre:#B8641C;
+    --good:#2E7D51; --good-bg:#E1EFE6;
+    --warn:#8F6408; --warn-bg:#F6EDCF;
+    --bad:#A93B2E; --bad-bg:#F4DDD8;
+    --shadow:0 1px 2px rgba(40,36,28,.05),0 8px 24px rgba(40,36,28,.06);
     --font-sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
     --font-mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
   }
   @media (prefers-color-scheme:dark){
     :root{
-      --bg:#0E1512; --surface:#151F1A; --surface-2:#1A2822; --raise:#1E2C25;
-      --ink:#E9EEE8; --ink-soft:#A6B4AB; --ink-faint:#788479;
-      --line:#26332C; --line-soft:#202B25;
-      --accent:#33B7AE; --accent-2:#54B4D0; --accent-ink:#052220;
+      --bg:#15171A; --surface:#1D2024; --surface-2:#24282D; --raise:#282C31;
+      --ink:#EBEAE4; --ink-soft:#ABAEA6; --ink-faint:#787B74;
+      --line:#31353B; --line-soft:#262A2F;
+      --accent:#37B7AE; --accent-2:#57ADD0; --accent-ink:#052220;
       --ochre:#E08A3E;
-      --good:#54BB80; --good-bg:#16281E;
+      --good:#54BB80; --good-bg:#18281F;
       --warn:#D9B84C; --warn-bg:#2B2410;
       --bad:#E0685A; --bad-bg:#2E1714;
-      --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35);
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.4);
     }
   }
   :root[data-theme="light"]{
-    --bg:#EDF0EA; --surface:#FBFCF9; --surface-2:#F2F5EE; --raise:#FFFFFF;
-    --ink:#16241E; --ink-soft:#48574F; --ink-faint:#7C8A81;
-    --line:#D6DCD0; --line-soft:#E4E9DE;
-    --accent:#0C6E6A; --accent-2:#1E88A8; --accent-ink:#FFFFFF; --ochre:#C56A1A;
-    --good:#2E7D51; --good-bg:#DCEEE1; --warn:#9A6B08; --warn-bg:#F6ECC9;
-    --bad:#A93B2E; --bad-bg:#F3DAD5; --shadow:0 1px 2px rgba(20,40,30,.06),0 8px 24px rgba(20,40,30,.06);
+    --bg:#F3F1EC; --surface:#FCFBF8; --surface-2:#F4F2ED; --raise:#FFFFFF;
+    --ink:#1F2420; --ink-soft:#54584F; --ink-faint:#8A8C82;
+    --line:#E3DFD6; --line-soft:#ECE9E1;
+    --accent:#0E7C78; --accent-2:#1E7FA0; --accent-ink:#FFFFFF; --ochre:#B8641C;
+    --good:#2E7D51; --good-bg:#E1EFE6; --warn:#8F6408; --warn-bg:#F6EDCF;
+    --bad:#A93B2E; --bad-bg:#F4DDD8; --shadow:0 1px 2px rgba(40,36,28,.05),0 8px 24px rgba(40,36,28,.06);
   }
   :root[data-theme="dark"]{
-    --bg:#0E1512; --surface:#151F1A; --surface-2:#1A2822; --raise:#1E2C25;
-    --ink:#E9EEE8; --ink-soft:#A6B4AB; --ink-faint:#788479;
-    --line:#26332C; --line-soft:#202B25;
-    --accent:#33B7AE; --accent-2:#54B4D0; --accent-ink:#052220; --ochre:#E08A3E;
-    --good:#54BB80; --good-bg:#16281E; --warn:#D9B84C; --warn-bg:#2B2410;
-    --bad:#E0685A; --bad-bg:#2E1714; --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35);
+    --bg:#15171A; --surface:#1D2024; --surface-2:#24282D; --raise:#282C31;
+    --ink:#EBEAE4; --ink-soft:#ABAEA6; --ink-faint:#787B74;
+    --line:#31353B; --line-soft:#262A2F;
+    --accent:#37B7AE; --accent-2:#57ADD0; --accent-ink:#052220; --ochre:#E08A3E;
+    --good:#54BB80; --good-bg:#18281F; --warn:#D9B84C; --warn-bg:#2B2410;
+    --bad:#E0685A; --bad-bg:#2E1714; --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.4);
   }
   *{box-sizing:border-box}
   html{-webkit-text-size-adjust:100%}
@@ -71,10 +71,16 @@
   /* header */
   header.top{
     position:relative;overflow:hidden;
-    background:
-      radial-gradient(120% 140% at 88% -10%,color-mix(in srgb,var(--accent) 22%,transparent),transparent 55%),
-      linear-gradient(180deg,var(--surface),var(--bg));
+    background:linear-gradient(180deg,var(--surface),var(--bg));
     border-bottom:1px solid var(--line);
+  }
+  header.top::before{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(90% 120% at 92% -20%,color-mix(in srgb,var(--accent) 10%,transparent),transparent 60%);
+  }
+  header.top::after{
+    content:"";position:absolute;left:0;right:0;top:0;height:3px;
+    background:linear-gradient(90deg,var(--accent),var(--accent-2));
   }
   .top-inner{padding:54px 0 40px}
   .kicker{
