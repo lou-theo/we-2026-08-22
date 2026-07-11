@@ -348,7 +348,7 @@
         </thead>
         <tbody>
           <tr>
-            <td><div class="act-name"><span class="chip g">Reco</span> <a href="https://www.airbnb.fr/rooms/1421686491425072049?adults=8&amp;check_in=2026-08-21&amp;check_out=2026-08-23" target="_blank" rel="noopener">Maison 8 couchages avec SPA</a></div><div class="act-sub">Airbnb · logement entier · <b>jacuzzi privatif</b> · secteur Métabief / Malbuisson (lac St-Point, Mont d'Or) · 4,66★ · pas cher.</div></td>
+            <td><div class="act-name"><span class="chip g">Reco</span> <a href="https://www.airbnb.fr/rooms/1421686491425072049?adults=8&amp;check_in=2026-08-21&amp;check_out=2026-08-23" target="_blank" rel="noopener">Maison 8 couchages avec SPA</a></div><div class="act-sub">Airbnb · logement entier · <b>jacuzzi privatif</b> · secteur Métabief / Malbuisson (lac St-Point, Mont d'Or) · 4,66★ · pas cher.<br><b>6 Rue du Chalet, 25370 Touillon-et-Loutelet</b></div></td>
             <td>Touillon-et-Loutelet</td><td class="num">8</td>
             <td><span class="chip w">3 ch. / 5 lits · 1 SdB</span></td>
             <td><span class="chip g">Jacuzzi privatif</span></td>
@@ -664,7 +664,7 @@
   if(!window.L||!document.getElementById('map')) return;
   var P=[
     // Gîtes
-    ['gite',"Maison 8 couchages SPA — Touillon-et-Loutelet",46.7869,6.3517,"https://www.airbnb.fr/rooms/1421686491425072049",1],
+    ['gite',"Maison 8 couchages SPA — Touillon-et-Loutelet",46.7920,6.3505,"https://www.airbnb.fr/rooms/1421686491425072049",1,"6 Rue du Chalet, 25370 Touillon-et-Loutelet"],
     ['gite',"La Champagnolaise — Champagnole",46.7470,5.9132,"https://www.booking.com/hotel/fr/la-champagnolaise.fr.html"],
     ['gite',"Maison XXL 4★ Spa — Les Hôpitaux-Neufs",46.7644,6.4022,"https://www.airbnb.fr/rooms/1436778324680540510"],
     ['gite',"Chaleureux chalet — Jougne",46.7717,6.3672,"https://www.airbnb.fr/rooms/1074004258632117298"],
@@ -704,6 +704,7 @@
   P.forEach(function(p){
     var m=L.marker([p[2],p[3]],{icon:icon(p[0],p[5]),zIndexOffset:p[5]?1000:0}).addTo(map);
     var h='<b>'+p[1]+'</b><br><span style="font-size:11px;letter-spacing:.04em;color:#8a8c82">'+lab[p[0]]+'</span>';
+    if(p[6]) h+='<br><span style="font-size:12px">'+p[6]+'</span>';
     if(p[4]) h+='<br><a href="'+p[4]+'" target="_blank" rel="noopener">Ouvrir le lien</a>';
     m.bindPopup(h);
     group.push(m);
