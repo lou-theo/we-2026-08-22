@@ -702,7 +702,7 @@
   var lab={sport:'Activité sport',gastro:'Détente / gastro',gite:'Gîte (piste)'};
   var group=[];
   P.forEach(function(p){
-    var m=L.marker([p[2],p[3]],{icon:icon(p[0],p[5])}).addTo(map);
+    var m=L.marker([p[2],p[3]],{icon:icon(p[0],p[5]),zIndexOffset:p[5]?1000:0}).addTo(map);
     var h='<b>'+p[1]+'</b><br><span style="font-size:11px;letter-spacing:.04em;color:#8a8c82">'+lab[p[0]]+'</span>';
     if(p[4]) h+='<br><a href="'+p[4]+'" target="_blank" rel="noopener">Ouvrir le lien</a>';
     m.bindPopup(h);
