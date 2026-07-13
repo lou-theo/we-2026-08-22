@@ -199,6 +199,14 @@
   .slot .when{font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:0 0 4px}
   .slot .what{font-size:14px;margin:0;color:var(--ink)}
   .slot .note{font-size:12.5px;color:var(--ink-faint);margin:3px 0 0}
+  .status{display:inline-block;font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 7px;border-radius:999px;margin:0 0 6px}
+  .status.sure{background:var(--good-bg);color:var(--good)}
+  .status.plan{background:color-mix(in srgb,var(--accent-2) 16%,transparent);color:var(--accent-2)}
+  .status.open{background:var(--warn-bg);color:var(--warn)}
+  .status.free{background:transparent;color:var(--accent);border:1px dashed color-mix(in srgb,var(--accent) 55%,transparent)}
+  .plan-legend{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:20px;font-size:13px;color:var(--ink-soft)}
+  .plan-legend span.item{display:inline-flex;align-items:center;gap:7px}
+  .plan-legend .status{margin:0}
 
   /* steps */
   ol.steps{list-style:none;counter-reset:s;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
@@ -270,20 +278,58 @@
 
 <nav class="nav">
   <div class="wrap nav-inner">
+    <a href="#planning">Planning</a>
     <a href="#carte">Carte</a>
     <a href="#logement">Logement</a>
     <a href="#activites">Activités</a>
     <a href="#transport">Transport</a>
-    <a href="#planning">Planning</a>
   </div>
 </nav>
 
 <main class="wrap">
 
+  <!-- PLANNING -->
+  <section id="planning">
+    <div class="sec-head">
+      <p class="eyebrow">01 — Planning</p>
+      <h2>Le week-end, heure par heure</h2>
+    </div>
+    <p>Vue d'ensemble d'abord : ce qui est <b>verrouillé</b>, ce qui est <b>envisagé</b>, ce qui reste <b>à trancher</b>, et les créneaux <b>libres</b> à remplir selon l'envie. Le détail des activités est plus bas.</p>
+    <div class="plan-legend">
+      <span class="item"><span class="status sure">Certain</span> verrouillé</span>
+      <span class="item"><span class="status plan">Envisagé</span> plan probable</span>
+      <span class="item"><span class="status open">À trancher</span> dépend d'une dispo / confirmation</span>
+      <span class="item"><span class="status free">Libre</span> au choix, selon l'envie</span>
+    </div>
+    <div class="days">
+      <div class="day">
+        <h3>Vendredi 21</h3>
+        <div class="slot"><span class="status sure">Certain</span><p class="when">Matin</p><p class="what">Départ voiture 1 (Reims) · Guillaume (moto, Vichy)</p></div>
+        <div class="slot"><span class="status sure">Certain</span><p class="when">Après-midi</p><p class="what">Récup Corentin à Besançon (TGV direct) sur la route · départ voiture 2 · installation + jacuzzi</p><p class="note">horaire TGV à figer</p></div>
+        <div class="slot"><span class="status free">Libre</span><p class="when">Fin d'aprem</p><p class="what">Petites activités au choix : basket, luge, fromagerie, absinthe</p></div>
+        <div class="slot"><span class="status plan">Envisagé</span><p class="when">Soir</p><p class="what">Apéro + barbecue au gîte</p></div>
+      </div>
+      <div class="day">
+        <h3>Samedi 22</h3>
+        <div class="slot"><span class="status sure">Certain</span><p class="when">Matin</p><p class="what">1ʳᵉ grosse activité — <b>Canyon Malvaux</b></p><p class="note">niveau d'eau vérifié ~1 sem. avant</p></div>
+        <div class="slot"><span class="status plan">Envisagé</span><p class="when">Midi</p><p class="what">Pique-nique / snack</p></div>
+        <div class="slot"><span class="status open">À trancher</span><p class="when">Après-midi</p><p class="what">2ᵉ grosse activité — <b>spéléo</b> ou <b>packraft</b></p><p class="note">selon dispo ; packraft = départ 9h (prend alors le matin, Malvaux passe l'aprem). Repli : via ferrata, canoë, accro, rando</p></div>
+        <div class="slot"><span class="status free">Libre</span><p class="when">Fin de journée</p><p class="what">Petites activités au choix</p></div>
+        <div class="slot"><span class="status plan">Envisagé</span><p class="when">Soir</p><p class="what">Soirée sans alcool + BBQ végé</p></div>
+      </div>
+      <div class="day">
+        <h3>Dimanche 23</h3>
+        <div class="slot"><span class="status free">Libre</span><p class="when">Matin</p><p class="what">Jacuzzi + petites activités au choix · check-out</p></div>
+        <div class="slot"><span class="status plan">Envisagé</span><p class="when">Midi</p><p class="what">Cap Besançon (route du retour) · resto en ville</p></div>
+        <div class="slot"><span class="status sure">Certain</span><p class="when">Début d'aprem</p><p class="what">Karting (CKB / Games Factory) — <b>bloqué</b> · dépose Corentin à la gare de Besançon</p></div>
+      </div>
+    </div>
+  </section>
+
   <!-- CARTE -->
   <section id="carte">
     <div class="sec-head">
-      <p class="eyebrow">01 — Carte</p>
+      <p class="eyebrow">02 — Carte</p>
       <h2>Tout le week-end sur une carte</h2>
     </div>
     <div class="map-legend">
@@ -298,7 +344,7 @@
   <!-- LOGEMENT -->
   <section id="logement">
     <div class="sec-head">
-      <p class="eyebrow">02 — Logement</p>
+      <p class="eyebrow">03 — Logement</p>
       <h2>Le gîte : Maison 8 couchages avec SPA, Touillon</h2>
     </div>
     <p>Choix <strong>acté</strong> après comparaison d'une dizaine de gîtes (critères : 8 couchages, piscine ou jacuzzi, <strong>logement privatisé</strong>, dispo les nuits du 21 et 22 août, proximité des activités). La <strong>Maison 8 couchages avec SPA</strong> à Touillon-et-Loutelet l'emporte : logement entier avec <strong>jacuzzi privatif</strong>, dispo, meilleur rapport prix/proximité — secteur Métabief / Malbuisson (lac St-Point, Mont d'Or), <strong>~35 min du canyon Malvaux</strong>.</p>
@@ -322,11 +368,11 @@
   <!-- ACTIVITÉS -->
   <section id="activites">
     <div class="sec-head">
-      <p class="eyebrow">03 — Activités</p>
+      <p class="eyebrow">04 — Activités</p>
       <h2>Le menu depuis le hub</h2>
     </div>
     <p>Prix indicatifs par personne, temps de route <strong>depuis le gîte (Touillon-et-Loutelet)</strong>. La colonne <em>vertige</em> est un repère à valider soi-même (photos + appel orga), sauf mention « écarté » quand l'organisateur l'indique rédhibitoire.</p>
-    <div class="callout" style="border-left-color:var(--accent-2)"><b>La grosse activité du samedi matin</b> se joue entre <b>trois candidates</b>, arbitrées selon la dispo (et l'eau) : <b>canyon Malvaux</b> (reco, eau fiable), <b>packraft</b> (Ornans, départ 9h, eau à confirmer J-7) et <b>spéléo</b> (Balerne, au sec — mais résa en ligne à débloquer, voir tableau). On tranche dès qu'on a les dispos des trois orgas.</div>
+    <div class="callout" style="border-left-color:var(--accent-2)"><b>Samedi = deux grosses activités.</b> <b>Canyon Malvaux</b> est acquis (eau fiable en août). La <b>2ᵉ</b> reste à trancher selon la dispo — d'abord <b>spéléo</b> (Balerne, au sec, résa à débloquer) ou <b>packraft</b> (Ornans). ⚠️ Le packraft a un <b>départ imposé à 9h</b> : s'il est retenu, c'est lui le matin et Malvaux passe l'après-midi. <b>En repli</b>, si ni spéléo ni packraft n'est dispo : via ferrata, canoë (l'Ain), accrobranche ou rando (cascades du Hérisson). Les <b>petites activités</b> (basket, luge, fromagerie, absinthe) se calent selon l'envie — vendredi fin d'aprem, samedi fin de journée, dimanche matin.</div>
     <div class="callout"><b>Le canyon en août — une question d'eau.</b> Le Doubs et la Loue coulent sur un karst fissuré → souvent à sec en été. Les canyons du Jura sud comme <b>Malvaux</b>, alimentés en altitude par la <b>Saine</b>, gardent l'eau — Malvaux est même <b>recommandé en été</b>. Le niveau réel se confirme ~<b>1 semaine avant</b> ; si besoin, on remplace l'activité eau par une autre (accrobranche, via ferrata, spéléo…).</div>
     <div class="callout" style="border-left-color:var(--ochre)"><b>À noter :</b> Touillon est au <b>Haut-Doubs</b> → imbattable pour luge / comté / absinthe (~15 min) mais <b>35 min à 1h20</b> des activités des lacs (Chalain, Hérisson) et du sud-ouest (Grosdar, Moirans). On priorise donc le cluster proche (Malvaux, Métabief, Pontarlier) ; les lacs/SW restent des options si on accepte la route.</div>
     <div class="table-scroll">
@@ -359,28 +405,28 @@
             <td><span class="chip w">Oui</span></td>
           </tr>
           <tr>
-            <td><div class="act-name"><a href="https://www.manawa.com/fr-FR/activite/france/besancon/rafting/descente-en-kayak-gonflable-des-gorges-de-la-loue-a-ornans-pres-de-besancon/23475" target="_blank" rel="noopener">Packraft (kayak gonflable)</a></div><div class="act-sub">Gorges de la Loue, Ornans · <b>départ imposé 9h</b></div></td>
+            <td><div class="act-name"><span class="chip w">Candidat 2ᵉ</span> <a href="https://www.manawa.com/fr-FR/activite/france/besancon/rafting/descente-en-kayak-gonflable-des-gorges-de-la-loue-a-ornans-pres-de-besancon/23475" target="_blank" rel="noopener">Packraft (kayak gonflable)</a></div><div class="act-sub">Gorges de la Loue, Ornans · <b>départ imposé 9h</b></div></td>
             <td class="num">~50 min</td><td class="num">49</td>
             <td><span class="chip w">À confirmer J-7</span></td>
             <td><span class="chip g">Faible</span></td>
             <td><span class="chip w">Oui</span></td>
           </tr>
           <tr>
-            <td><div class="act-name"><a href="https://www.jura-tourism.com/activite/canoe-kayak-pontois/" target="_blank" rel="noopener">Descente canoë / kayak — l'Ain</a></div><div class="act-sub">Canoë Kayak Pontois, Pont-de-Poitte · <b>horaires souples, eau régulée</b> (vs 9h imposé du packraft)</div></td>
+            <td><div class="act-name"><span class="chip n">Repli</span> <a href="https://www.jura-tourism.com/activite/canoe-kayak-pontois/" target="_blank" rel="noopener">Descente canoë / kayak — l'Ain</a></div><div class="act-sub">Canoë Kayak Pontois, Pont-de-Poitte · <b>horaires souples, eau régulée</b> (vs 9h imposé du packraft)</div></td>
             <td class="num">~1h</td><td class="num">15–24</td>
             <td><span class="chip g">Fiable (Ain régulé)</span></td>
             <td><span class="chip g">Faible</span></td>
             <td><span class="chip w">Conseillé</span></td>
           </tr>
           <tr>
-            <td><div class="act-name"><a href="https://www.jura-accro-loisirs.fr/" target="_blank" rel="noopener">Accrobranche de Doucier</a></div><div class="act-sub">près lac de Chalain · 10 parcours</div></td>
+            <td><div class="act-name"><span class="chip n">Repli</span> <a href="https://www.jura-accro-loisirs.fr/" target="_blank" rel="noopener">Accrobranche de Doucier</a></div><div class="act-sub">près lac de Chalain · 10 parcours</div></td>
             <td class="num">~50 min</td><td class="num">~22</td>
             <td><span class="chip n">Sec</span></td>
             <td><span class="chip w">Selon parcours</span><div class="act-sub">ligne de vie continue</div></td>
             <td><span class="chip n">Conseillé</span></td>
           </tr>
           <tr>
-            <td><div class="act-name"><a href="https://www.jura-tourism.com/activite/via-ferrata-du-regardoir-lac-de-vouglans/" target="_blank" rel="noopener">Via ferrata Jura</a></div><div class="act-sub">Le Regardoir — lac de Vouglans (Moirans)</div></td>
+            <td><div class="act-name"><span class="chip n">Repli</span> <a href="https://www.jura-tourism.com/activite/via-ferrata-du-regardoir-lac-de-vouglans/" target="_blank" rel="noopener">Via ferrata Jura</a></div><div class="act-sub">Le Regardoir — lac de Vouglans (Moirans)</div></td>
             <td class="num">~1h20</td><td class="num">40–50</td>
             <td><span class="chip n">Sec</span></td>
             <td><span class="chip w">Selon parcours</span></td>
@@ -394,14 +440,14 @@
             <td><span class="chip g">Non</span></td>
           </tr>
           <tr>
-            <td><div class="act-name"><span class="chip g">Reco</span> <a href="https://www.karting-besancon.com/" target="_blank" rel="noopener">Karting</a></div><div class="act-sub">CKB Besançon (outdoor 1200 m) ou Games Factory (indoor) · idéal dimanche au retour</div></td>
+            <td><div class="act-name"><span class="chip g">Reco</span> <a href="https://www.karting-besancon.com/" target="_blank" rel="noopener">Karting</a></div><div class="act-sub">CKB Besançon (outdoor 1200 m) ou Games Factory (indoor) · <b>bloqué dimanche début d'aprem</b> (au retour)</div></td>
             <td class="num">~1h<div class="act-sub">Besançon, sur la route</div></td><td class="num">17–18</td>
             <td><span class="chip n">Sec</span></td>
             <td><span class="chip g">Faible</span></td>
             <td><span class="chip w">Conseillé</span></td>
           </tr>
           <tr>
-            <td><div class="act-name"><a href="https://www.cascades-du-herisson.fr/" target="_blank" rel="noopener">Cascades du Hérisson</a></div><div class="act-sub">rando · plan B sans résa</div></td>
+            <td><div class="act-name"><span class="chip n">Repli</span> <a href="https://www.cascades-du-herisson.fr/" target="_blank" rel="noopener">Cascades du Hérisson</a></div><div class="act-sub">rando · sans résa</div></td>
             <td class="num">~50 min</td><td class="num">gratuit</td>
             <td><span class="chip w">Variable</span></td>
             <td><span class="chip g">Faible</span></td>
@@ -422,7 +468,7 @@
             <td><span class="chip g">Non</span></td>
           </tr>
           <tr>
-            <td><div class="act-name"><a href="https://www.la-boite-a-montagne-jura.fr/activite-details/speleologie/speleologie-grotte-de-balerne/153" target="_blank" rel="noopener">Spéléo découverte</a></div><div class="act-sub">grotte de Balerne · horizontal · <b>candidate grosse activité samedi</b></div></td>
+            <td><div class="act-name"><span class="chip w">Candidat 2ᵉ</span> <a href="https://www.la-boite-a-montagne-jura.fr/activite-details/speleologie/speleologie-grotte-de-balerne/153" target="_blank" rel="noopener">Spéléo découverte</a></div><div class="act-sub">grotte de Balerne · horizontal</div></td>
             <td class="num">~40 min</td><td class="num">~45</td>
             <td><span class="chip n">Sec</span></td>
             <td><span class="chip g">Faible</span></td>
@@ -457,7 +503,7 @@
             <td>Sans RDV · caveau <span class="chip g">libre</span><div class="act-sub">alt. Château-Chalon / Caveau des Jacobins (Poligny)</div></td>
           </tr>
           <tr>
-            <td><div class="act-name"><a href="https://pontarlier-anis.com/" target="_blank" rel="noopener">Distillerie d'absinthe</a></div><div class="act-sub">« Fée verte » · Distillerie Guy / Émile Pernot</div></td>
+            <td><div class="act-name"><span class="chip g">Reco</span> <a href="https://pontarlier-anis.com/" target="_blank" rel="noopener">Distillerie d'absinthe</a></div><div class="act-sub">« Fée verte » · Distillerie Guy / Émile Pernot</div></td>
             <td>Pontarlier</td><td class="num">~15 min</td><td class="num">gratuit</td>
             <td>Visite + dégustation offerte · <span class="chip g">sans RDV (Guy)</span></td>
           </tr>
@@ -469,7 +515,7 @@
   <!-- TRANSPORT -->
   <section id="transport">
     <div class="sec-head">
-      <p class="eyebrow">04 — Transport</p>
+      <p class="eyebrow">05 — Transport</p>
       <h2>Qui arrive comment</h2>
     </div>
     <div class="grid">
@@ -481,35 +527,6 @@
     <div class="callout" style="margin-top:18px">
       <b>Corentin — tout par Besançon.</b> Corentin garde son <b>TGV direct Strasbourg → Besançon</b>. La route des voitures rémoises vers Touillon passe par <b>Besançon puis la N57</b> (A31 → A36 → N57 Pontarlier) → une voiture le récupère <b>au passage vendredi, sans détour</b>. Besançon est à ~1h du gîte, mais on y repasse <b>dimanche</b> (karting + resto en ville) avant de le déposer à la gare — même trajet, boucle bouclée. Horaires SNCF à figer.
       <a href="https://www.sncf-connect.com/train/horaires/strasbourg/besancon" target="_blank" rel="noopener">Horaires Strasbourg↔Besançon</a>.
-    </div>
-  </section>
-
-  <!-- PLANNING -->
-  <section id="planning">
-    <div class="sec-head">
-      <p class="eyebrow">05 — Planning recomposé</p>
-      <h2>Le week-end, heure par heure</h2>
-    </div>
-    <div class="days">
-      <div class="day">
-        <h3>Vendredi 21</h3>
-        <div class="slot"><p class="when">Matin</p><p class="what">Départ voiture 1 (Reims) · Guillaume (moto, Vichy)</p></div>
-        <div class="slot"><p class="when">Après-midi</p><p class="what">Récupérer Corentin à Besançon (TGV direct) sur la route · départ voiture 2 · installation + jacuzzi + basket/foot au gîte</p></div>
-        <div class="slot"><p class="when">Soir</p><p class="what">Soirée + barbecue</p></div>
-      </div>
-      <div class="day">
-        <h3>Samedi 22</h3>
-        <div class="slot"><p class="when">Matin</p><p class="what">Grosse activité — Canyon Malvaux (défaut)</p><p class="note">en concurrence selon dispo/eau : packraft (Ornans, 9h) ou spéléo (Balerne) — tranché dès dispos connues</p></div>
-        <div class="slot"><p class="when">Midi</p><p class="what">Sandwich / snack</p></div>
-        <div class="slot"><p class="when">Après-midi</p><p class="what">Cluster Haut-Doubs (~10–15 min du gîte) : luge sur rail + fromagerie du Mont d'Or + absinthe Pontarlier</p><p class="note">tout près, après le canyon du matin</p></div>
-        <div class="slot"><p class="when">Soir</p><p class="what">Soirée sans alcool + BBQ végé</p></div>
-      </div>
-      <div class="day">
-        <h3>Dimanche 23</h3>
-        <div class="slot"><p class="when">Matin</p><p class="what">Ronfler + jacuzzi · check-out</p></div>
-        <div class="slot"><p class="when">Midi</p><p class="what">Cap Besançon (sur la route du retour) · resto en ville</p></div>
-        <div class="slot"><p class="when">Après-midi</p><p class="what">Karting (CKB / Games Factory) · dépose Corentin à la gare de Besançon</p></div>
-      </div>
     </div>
   </section>
 
@@ -566,7 +583,7 @@
     ['gastro',"Comté — Fort des Rousses (Juraflore)",46.4840,6.0640,"https://www.fort-des-rousses.com/fr"],
     ['gastro',"Comté — Fromagerie du Mont d'Or (Métabief)",46.7810,6.3560,"https://www.comte.com/sur-les-routes-du-comte/fromagerie-du-mont-dor/",1],
     ['gastro',"Vin jaune — Fruitière Vinicole d'Arbois",46.9040,5.7750,"https://www.fruitiere-vinicole-arbois.fr/"],
-    ['gastro',"Absinthe — Pontarlier (Distillerie Guy)",46.9080,6.3560,"https://pontarlier-anis.com/"]
+    ['gastro',"Absinthe — Pontarlier (Distillerie Guy)",46.9080,6.3560,"https://pontarlier-anis.com/",1]
   ];
   var map=L.map('map',{scrollWheelZoom:true}).setView([46.68,5.98],9);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'&copy; OpenStreetMap'}).addTo(map);
