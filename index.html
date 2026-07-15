@@ -217,6 +217,18 @@
   .callout{background:var(--surface-2);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:10px;padding:14px 16px;font-size:14px;color:var(--ink-soft);margin-top:14px}
   .callout b{color:var(--ink)}
 
+  /* à prendre */
+  .pack-sub{font-size:14px;margin:26px 0 12px}
+  .pack-sub .k{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint)}
+  .checklist{list-style:none;margin:0;padding:0}
+  .checklist.cols{columns:2;column-gap:30px}
+  @media (max-width:560px){.checklist.cols{columns:1}}
+  .checklist li{position:relative;padding-left:26px;margin:9px 0;font-size:14px;color:var(--ink-soft);break-inside:avoid}
+  .checklist li::before{content:"";position:absolute;left:0;top:4px;width:14px;height:14px;border:1.5px solid var(--line);border-radius:4px;background:var(--surface)}
+  .checklist li b{color:var(--ink);font-weight:600}
+  .pack-why{color:var(--ink-faint);font-size:12.5px}
+  .pack-card .lbl{display:flex;align-items:center;gap:8px}
+
   /* carte */
   .map{height:480px;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden;z-index:0}
   .map-legend{display:flex;flex-wrap:wrap;gap:18px;margin-bottom:12px;font-size:14px;color:var(--ink)}
@@ -276,6 +288,7 @@
     <a href="#carte">Carte</a>
     <a href="#logement">Logement</a>
     <a href="#activites">Activités</a>
+    <a href="#materiel">À prendre</a>
     <a href="#transport">Transport</a>
   </div>
 </nav>
@@ -511,10 +524,76 @@
     </div>
   </section>
 
+  <!-- À PRENDRE -->
+  <section id="materiel">
+    <div class="sec-head">
+      <p class="eyebrow">05 — À prendre</p>
+      <h2>La liste, déduite du programme</h2>
+    </div>
+    <p>Deux niveaux : ce que <strong>chacun</strong> met dans son sac, et ce qu'on <strong>mutualise</strong> (à se répartir avant le départ pour ne pas venir à huit avec le même Mölkky). Tout est déduit des activités : eau vive + spéléo + jacuzzi + terrain de sport + soirées en altitude.</p>
+
+    <div class="callout" style="border-left-color:var(--accent-2)"><b>Fourni sur place — ne pas emporter :</b> combinaison néoprène, casque et éclairage pour le canyon &amp; la spéléo (Sports Nature Évasion) ; casque au karting ; linge de lit (déjà compté dans le prix du gîte). À <b>vérifier avant</b> : matériel BBQ + charbon au gîte, et nombre de serviettes fournies.</div>
+
+    <h3 class="pack-sub"><span class="k">Individuel</span> — chacun son sac</h3>
+    <div class="card pack-card">
+      <ul class="checklist cols">
+        <li><b>Maillot / short de bain</b> <span class="pack-why">— sous la combi au canyon, jacuzzi, canoë en repli</span></li>
+        <li><b>2 serviettes</b> <span class="pack-why">— une jacuzzi, une pour les activités eau</span></li>
+        <li><b>Chaussures fermées type rando</b> <span class="pack-why">— canyon + spéléo (qui tiennent au pied et peuvent être mouillées/boueuses) ; servent aussi à la rando repli (Hérisson)</span></li>
+        <li><b>Baskets</b> <span class="pack-why">— basket/foot au gîte, ville, karting</span></li>
+        <li><b>Plusieurs changes de sport</b> <span class="pack-why">— 2 grosses activités le samedi + terrain à côté du gîte</span></li>
+        <li><b>Tenue sèche de rechange</b> <span class="pack-why">— à enfiler juste après le canyon</span></li>
+        <li><b>Sous-couche chaude pour la spéléo</b> <span class="pack-why">— legging + haut manches longues + chaussettes ; la grotte est fraîche et humide</span></li>
+        <li><b>Pull / veste</b> <span class="pack-why">— soirées fraîches, Métabief est à ~900 m</span></li>
+        <li><b>Sac plastique / étanche</b> <span class="pack-why">— pour rapporter les affaires mouillées et boueuses</span></li>
+        <li><b>Trousse de toilette, crème solaire, casquette, lunettes</b></li>
+        <li><b>Gourde + chargeur</b></li>
+        <li><b>Carte d'identité + carte vitale</b> <span class="pack-why">— CNI obligatoire si repli lac de Neuchâtel (Suisse)</span></li>
+        <li><b>Élastique à cheveux</b> <span class="pack-why">— cheveux longs attachés au karting</span></li>
+      </ul>
+    </div>
+
+    <h3 class="pack-sub"><span class="k">Collectif</span> — à se répartir</h3>
+    <div class="grid">
+      <div class="card pack-card">
+        <p class="lbl"><span class="chip g">Achat + cadeau</span></p>
+        <div class="act-name" style="margin:2px 0 8px">Pour jouer ensemble + offrir à Corentin</div>
+        <ul class="checklist">
+          <li><b>Ballon de basket</b> <span class="pack-why">— terrain à 200 m du gîte</span></li>
+          <li><b>Ballon de foot</b></li>
+        </ul>
+        <p class="pack-why" style="margin:8px 0 0">On s'en sert tout le week-end, puis on les offre à Corentin.</p>
+      </div>
+      <div class="card pack-card">
+        <p class="lbl"><span class="chip w">Ambiance</span></p>
+        <div class="act-name" style="margin:2px 0 8px">Soirées &amp; temps morts</div>
+        <ul class="checklist">
+          <li><b>Jeu(x) de société</b></li>
+          <li><b>Jeu d'extérieur</b> <span class="pack-why">— Mölkky, pétanque ou Spikeball</span></li>
+          <li><b>Enceinte Bluetooth</b></li>
+          <li><b>Softs &amp; sirops</b> <span class="pack-why">— soirée sans alcool le samedi</span></li>
+          <li><b>Appareil photo / GoPro</b> <span class="pack-why">— étanche pour le canyon</span></li>
+        </ul>
+      </div>
+      <div class="card pack-card">
+        <p class="lbl"><span class="chip n">Intendance</span></p>
+        <div class="act-name" style="margin:2px 0 8px">Gîte &amp; repas</div>
+        <ul class="checklist">
+          <li><b>Courses BBQ</b> <span class="pack-why">— dont une option végé le samedi soir</span></li>
+          <li><b>Charbon + allume-feu</b> <span class="pack-why">— si non fourni au gîte</span></li>
+          <li><b>Pique-nique / snack samedi midi</b> <span class="pack-why">— entre les 2 demi-journées</span></li>
+          <li><b>Petit-déj + café</b></li>
+          <li><b>Trousse à pharmacie</b></li>
+          <li><b>Sacs poubelle, essuie-tout</b></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
   <!-- TRANSPORT -->
   <section id="transport">
     <div class="sec-head">
-      <p class="eyebrow">05 — Transport</p>
+      <p class="eyebrow">06 — Transport</p>
       <h2>Qui arrive comment</h2>
     </div>
     <div class="grid">
