@@ -346,7 +346,7 @@
       <span><i class="dot sport"></i> Activité sport</span>
       <span><i class="dot gastro"></i> Détente / gastro</span>
       <span><i class="dot gare"></i> Gare (Corentin)</span>
-      <span><b class="lg-star">★</b> Activité reco</span>
+      <span><b class="lg-star">★</b> Au programme</span>
     </div>
     <div id="map" class="map"></div>
     <p style="font-size:13px;color:var(--ink-faint);margin-top:10px">Positions approximatives — cliquer un pin pour le nom + le lien. Fond de carte © OpenStreetMap.</p>
@@ -628,7 +628,7 @@
     });
   })();
 
-  // Sections d'activités pliables — seul « Reco » déplié par défaut
+  // Sections d'activités pliables — Réservées, Temps libre et Reco de l'hôte dépliées par défaut
   (function(){
     var segs=[].slice.call(document.querySelectorAll('tbody tr.seg'));
     segs.forEach(function(seg){
@@ -666,14 +666,13 @@
     // Gare (Corentin)
     ['gare',"Gare Besançon Franche-Comté TGV — récup/dépose Corentin",47.3080,5.9525,"https://www.sncf-connect.com/train/horaires/strasbourg/besancon","","TGV direct Strasbourg · sur l'A36, à 16 km du centre de Besançon (Viotte = correspondance)"],
     // Sport
-    ['sport',"Basket / foot — à côté du gîte",46.791489,6.351199,"",1,"~200 m à pied du gîte (Touillon)"],
+    ['sport',"Basket / foot — à côté du gîte",46.791489,6.351199,"","","~200 m à pied du gîte (Touillon)"],
     ['sport',"Canyon de Malvaux — Foncine-le-Bas",46.6600,6.0600,"https://www.sportsnatureevasion.com/activites/canyoning-jura-gorges-de-malvaux-foncine-le-bas-initiation/",1],
-    ['sport',"Packraft — Gorges de la Loue, Ornans",47.1050,6.1500,"https://www.manawa.com/fr-FR/activite/france/besancon/rafting/descente-en-kayak-gonflable-des-gorges-de-la-loue-a-ornans-pres-de-besancon/23475"],
     ['sport',"Descente canoë/kayak — l'Ain, Pont-de-Poitte",46.6280,5.7080,"https://www.jura-tourism.com/activite/canoe-kayak-pontois/"],
     ['sport',"Accrobranche — Doucier",46.6600,5.7830,"https://www.jura-accro-loisirs.fr/"],
     ['sport',"Via ferrata du Regardoir — lac de Vouglans",46.4350,5.7250,"https://www.jura-tourism.com/activite/via-ferrata-du-regardoir-lac-de-vouglans/"],
     ['sport',"Ski nautique / wakeboard — Jura Ski School, base de Bellecin (lac de Vouglans)",46.4180,5.6820,"https://juraskischool.com/","","même lac que la via ferrata du Regardoir → couplable"],
-    ['sport',"Luge sur rail — Métabief",46.7700,6.3550,"https://www.station-metabief.com/fr/luge-sur-rails-metabief",1],
+    ['sport',"Luge sur rail — Métabief",46.7700,6.3550,"https://www.station-metabief.com/fr/luge-sur-rails-metabief"],
     ['sport',"Lac de Saint-Point — Malbuisson (baignade, paddle, canoë)",46.8080,6.2970,"https://www.destination-haut-doubs.com/malbuisson-les-lacs.html","","le plan d'eau le plus proche du gîte (~15 min)"],
     ['sport',"Karting — Games Factory Besançon",47.2400,6.0200,"https://gamesfactory.fr/besancon/karting/",1],
     ['sport',"Lac de Neuchâtel (baignade, paddle, croisière) 🇨🇭",46.9900,6.9300,"https://www.neuchatelville.ch/sortir-et-decouvrir/le-lac-de-neuchatel"],
@@ -682,9 +681,14 @@
     ['sport',"Spéléo — grotte des Faux Monnayeurs, Mouthier-Haute-Pierre",47.0430,6.2780,"https://www.sportsnatureevasion.com/activites/speleologie-jura-grotte-des-faux-monnayeurs/",1],
     // Gastro
     ['gastro',"Comté — Fort des Rousses (Juraflore)",46.4840,6.0640,"https://www.fort-des-rousses.com/fr"],
-    ['gastro',"Comté — Fromagerie du Mont d'Or (Métabief)",46.7810,6.3560,"https://www.comte.com/sur-les-routes-du-comte/fromagerie-du-mont-dor/",1],
+    ['gastro',"Comté — Fromagerie du Mont d'Or (Métabief)",46.7810,6.3560,"https://www.comte.com/sur-les-routes-du-comte/fromagerie-du-mont-dor/"],
     ['gastro',"Vin jaune — Fruitière Vinicole d'Arbois",46.9040,5.7750,"https://www.fruitiere-vinicole-arbois.fr/"],
-    ['gastro',"Absinthe — Pontarlier (Distillerie Guy)",46.9080,6.3560,"https://pontarlier-anis.com/",1]
+    ['gastro',"Absinthe — Pontarlier (Distillerie Guy)",46.9080,6.3560,"https://pontarlier-anis.com/"],
+    // Reco de l'hôte — restos & bars
+    ['gastro',"Chez Zaza — Métabief (reco hôte)",46.7790,6.3540,"https://www.google.com/maps/search/?api=1&query=Chez+Zaza+Métabief"],
+    ['gastro',"Le Bon Accueil — Malbuisson (reco hôte)",46.8095,6.3010,"https://www.google.com/maps/search/?api=1&query=Le+Bon+Accueil+Malbuisson"],
+    ['gastro',"Orge et Houblon — Jougne (reco hôte)",46.7660,6.3620,"https://www.google.com/maps/search/?api=1&query=Orge+et+Houblon+Jougne"],
+    ['gastro',"La Boissaude — Rochejean (reco hôte)",46.7620,6.3160,"https://www.google.com/maps/search/?api=1&query=Restaurant+La+Boissaude+Rochejean"]
   ];
   var map=L.map('map',{scrollWheelZoom:true}).setView([46.68,5.98],9);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'&copy; OpenStreetMap'}).addTo(map);
