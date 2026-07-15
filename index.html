@@ -182,6 +182,12 @@
   tbody tr.seg .seg-lbl.repli{color:var(--ink-soft)}
   tbody tr.seg .seg-lbl.ecarte{color:var(--bad)}
   tbody tr.seg .seg-note{font-size:12px;color:var(--ink-faint);margin-left:9px}
+  tbody tr.seg.clk{cursor:pointer;user-select:none;-webkit-user-select:none}
+  tbody tr.seg.clk:hover td{background:var(--line-soft)}
+  tbody tr.seg .caret{display:inline-block;font-size:11px;color:var(--ink-faint);margin-right:9px;transition:transform .15s ease}
+  tbody tr.seg.open .caret{transform:rotate(90deg)}
+  tbody tr.seg .seg-count{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);margin-left:9px}
+  @media (prefers-reduced-motion:reduce){tbody tr.seg .caret{transition:none}}
 
   /* planning */
   .days{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
@@ -373,7 +379,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="seg"><td colspan="6"><span class="seg-lbl reco">Reco — au programme</span><span class="seg-note">le combo samedi + les petites activités à caler selon l'envie</span></td></tr>
+          <tr class="seg"><td colspan="6"><span class="caret">▸</span><span class="seg-lbl reco">Reco — au programme</span><span class="seg-note">le combo samedi + les petites activités à caler selon l'envie</span></td></tr>
           <tr>
             <td><div class="act-name"><span class="chip g">Combo samedi</span> <a href="https://www.sportsnatureevasion.com/activites/canyoning-jura-gorges-de-malvaux-foncine-le-bas-initiation/" target="_blank" rel="noopener">Canyon de Malvaux</a></div><div class="act-sub">Foncine-le-Bas · niveau 1, dès 8 ans · <b>demi-journée</b> · même moniteur que la spéléo (Sports Nature Évasion)</div></td>
             <td class="num">~35 min</td><td class="num">90 €/pers<div class="act-sub">devis combo · 720 € les 8 (2 activités)</div></td>
@@ -409,7 +415,7 @@
             <td><span class="chip g">Faible</span></td>
             <td><span class="chip w">Conseillé</span></td>
           </tr>
-          <tr class="seg"><td colspan="6"><span class="seg-lbl repli">Repli — alternatives</span><span class="seg-note">si un créneau du combo saute, ou pour compléter le week-end</span></td></tr>
+          <tr class="seg"><td colspan="6"><span class="caret">▸</span><span class="seg-lbl repli">Repli — alternatives</span><span class="seg-note">si un créneau du combo saute, ou pour compléter le week-end</span></td></tr>
           <tr>
             <td><div class="act-name"><a href="https://www.jura-tourism.com/activite/canoe-kayak-pontois/" target="_blank" rel="noopener">Descente canoë / kayak — l'Ain</a></div><div class="act-sub">Canoë Kayak Pontois, Pont-de-Poitte · <b>horaires souples, eau régulée</b> (vs 9h imposé du packraft)</div></td>
             <td class="num">~1h</td><td class="num">15–24</td>
@@ -459,7 +465,7 @@
             <td><span class="chip g">Faible</span></td>
             <td><span class="chip g">Non</span></td>
           </tr>
-          <tr class="seg"><td colspan="6"><span class="seg-lbl ecarte">Écarté</span><span class="seg-note">incompatible avec le planning</span></td></tr>
+          <tr class="seg"><td colspan="6"><span class="caret">▸</span><span class="seg-lbl ecarte">Écarté</span><span class="seg-note">incompatible avec le planning</span></td></tr>
           <tr class="dropped">
             <td><div class="act-name"><a href="https://www.manawa.com/fr-FR/activite/france/besancon/rafting/descente-en-kayak-gonflable-des-gorges-de-la-loue-a-ornans-pres-de-besancon/23475" target="_blank" rel="noopener">Packraft (kayak gonflable)</a></div><div class="act-sub">Gorges de la Loue, Ornans · <b>départ 9h imposé</b> — chevauche le combo, non enchaînable</div></td>
             <td class="num">~50 min</td><td class="num">49</td>
@@ -547,6 +553,33 @@
       var cur=root.getAttribute('data-theme');
       if(!cur){cur=window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';}
       root.setAttribute('data-theme', cur==='dark'?'light':'dark');
+    });
+  })();
+
+  // Sections d'activités pliables — seul « Reco » déplié par défaut
+  (function(){
+    var segs=[].slice.call(document.querySelectorAll('tbody tr.seg'));
+    segs.forEach(function(seg){
+      var rows=[],n=seg.nextElementSibling;
+      while(n&&!n.classList.contains('seg')){rows.push(n);n=n.nextElementSibling;}
+      var cnt=document.createElement('span');
+      cnt.className='seg-count';
+      cnt.textContent=rows.length+(rows.length>1?' activités':' activité');
+      seg.querySelector('td').appendChild(cnt);
+      seg.classList.add('clk');
+      seg.setAttribute('role','button');
+      seg.setAttribute('tabindex','0');
+      function set(open){
+        seg.classList.toggle('open',open);
+        seg.setAttribute('aria-expanded',open);
+        rows.forEach(function(r){r.style.display=open?'':'none';});
+      }
+      set(seg.querySelector('.seg-lbl.reco')!=null);
+      function toggle(){set(!seg.classList.contains('open'));}
+      seg.addEventListener('click',toggle);
+      seg.addEventListener('keydown',function(e){
+        if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();}
+      });
     });
   })();
 </script>
